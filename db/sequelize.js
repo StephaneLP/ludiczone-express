@@ -1,10 +1,12 @@
 const { Sequelize, DataTypes } = require("sequelize")
 const dataAreaType = require("./data/area-type.json")
+const dataAreaZone = require("./data/area-zone.json")
 
 const sequelize = new Sequelize("db_funarea", "root", "", {
     host: "localhost",
     dialect: "mariadb",
     logging: false,
+    timezone: "Europe/Paris",
 })
 
 const AreaTypeModel = require("../models/area-type.model")(sequelize, DataTypes)
@@ -32,7 +34,17 @@ const initDb = () => {
                     picture: element.picture,
                     rank: element.rank,
                 })
-            });
+            })
+        })
+        .then(() => {
+            dataAreaZone.forEach((element) => {
+                AreaZoneModel.create({
+                    name: element.name,
+                    description: element.description,
+                    picture: element.picture,
+                    rank: element.rank,
+                })
+            })
         })
 }
 

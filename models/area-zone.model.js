@@ -6,7 +6,7 @@ const AreaZone = (sequelize, DataTypes) => {
             autoIncrement: true,
         },
         name: {
-            type: DataTypes.STRING(50),
+            type: DataTypes.STRING(100),
             allowNull: false,
             unique: {msg: "Ce nom de zone est déjà pris."},
             validate: {

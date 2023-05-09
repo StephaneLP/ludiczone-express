@@ -9,6 +9,17 @@ const sequelize = new Sequelize("db_funarea", "root", "", {
 
 const AreaTypeModel = require("../models/area-type.model")(sequelize, DataTypes)
 const AreaZoneModel = require("../models/area-zone.model")(sequelize, DataTypes)
+const AreaModel = require("../models/area.model")(sequelize, DataTypes)
+
+AreaTypeModel.hasMany(AreaModel, {
+    foreignKey: {allowNull: false}
+})
+AreaModel.belongsTo(AreaTypeModel);
+
+AreaZoneModel.hasMany(AreaModel, {
+    foreignKey: {allowNull: false}
+})
+AreaModel.belongsTo(AreaZoneModel);
 
 const initDb = () => {
     // Trois options : sync() - sync({ force: true }) - sync({ alter: true })

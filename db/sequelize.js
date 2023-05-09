@@ -1,5 +1,5 @@
 const { Sequelize, DataTypes } = require("sequelize")
-const dataAreaType = require("./data-area-type")
+const dataAreaType = require("./data/area-type.json")
 
 const sequelize = new Sequelize("db_funarea", "root", "", {
     host: "localhost",
@@ -8,6 +8,7 @@ const sequelize = new Sequelize("db_funarea", "root", "", {
 })
 
 const AreaTypeModel = require("../models/area-type.model")(sequelize, DataTypes)
+const AreaZoneModel = require("../models/area-zone.model")(sequelize, DataTypes)
 
 const initDb = () => {
     // Trois options : sync() - sync({ force: true }) - sync({ alter: true })

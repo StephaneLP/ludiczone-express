@@ -29,6 +29,7 @@ const initDb = () => {
         .then(() => {
             dataAreaType.forEach((element) => {
                 AreaTypeModel.create({
+                    id: element.id,
                     name: element.name,
                     description: element.description,
                     picture: element.picture,
@@ -39,6 +40,7 @@ const initDb = () => {
         .then(() => {
             dataAreaZone.forEach((element) => {
                 AreaZoneModel.create({
+                    id: element.id,
                     name: element.name,
                     description: element.description,
                     picture: element.picture,

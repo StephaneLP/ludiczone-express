@@ -1,83 +1,97 @@
 [
     {
+        "id": 1,
         "name": "Bordeaux Maritime",
         "description": "",
         "picture": "",
         "rank": 0
     },
     {
+        "id": 2,
         "name": "Bordeaux La Bastide",
         "description": "",
         "picture": "",
         "rank": 0
     },
     {
+        "id": 3,
         "name": "Bordeaux Chartrons - Grand Parc - Jardin Public",
         "description": "",
         "picture": "",
         "rank": 0
     },
     {
+        "id": 4,
         "name": "Bordeaux Centre",
         "description": "",
         "picture": "",
         "rank": 0
     },
     {
+        "id": 5,
         "name": "Bordeaux Caudéran",
         "description": "",
         "picture": "",
         "rank": 0
     },
     {
+        "id": 6,
         "name": "Bordeaux Saint Augustin - Tauzin - Alphonse Dupeux",
         "description": "",
         "picture": "",
         "rank": 0
     },
     {
+        "id": 7,
         "name": "Bordeaux Nansouty - Saint-Genès",
         "description": "",
         "picture": "",
         "rank": 0
     },
     {
+        "id": 8,
         "name": "Bordeaux Sud",
         "description": "",
         "picture": "",
         "rank": 0
     },
     {
+        "id": 9,
         "name": "Le Bouscat - Bruges",
         "description": "",
         "picture": "",
         "rank": 0
     },
     {
+        "id": 10,
         "name": "Mérignac",
         "description": "",
         "picture": "",
         "rank": 0
     },
     {
+        "id": 11,
         "name": "Pessac",
         "description": "",
         "picture": "",
         "rank": 0
     },
     {
+        "id": 12,
         "name": "Talence - Bègles",
         "description": "",
         "picture": "",
         "rank": 0
     },
     {
+        "id": 13,
         "name": "Lormont - Cenon - Floirac",
         "description": "",
         "picture": "",
         "rank": 0
     },    
     {
+        "id": 14,
         "name": "Aglomération Extra Rocade",
         "description": "",
         "picture": "",

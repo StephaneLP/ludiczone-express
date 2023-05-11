@@ -1,35 +1,41 @@
 [
     {
+        "id": 1,
         "name": "VR Games",
         "description": "Réalité Virtuelle",
         "picture": "vr-games.jpg",
         "rank": 1
     },
     {
+        "id": 2,
         "name": "Escape Games",
         "description": "",
         "picture": "escape-games.jpg",
         "rank": 2
     },
     {
+        "id": 3,
         "name": "Laser Games",
         "description": "",
         "picture": "laser-games.jpg",
         "rank": 3
     },
     {
+        "id": 4,
         "name": "Jeux de société",
         "description": "",
         "picture": "societe.jpg",
         "rank": 4
     },
     {
+        "id": 5,
         "name": "Karting",
         "description": "",
         "picture": "karting.jpg",
         "rank": 5
     },
     {
+        "id": 6,
         "name": "Bowling",
         "description": "",
         "picture": "bowling.jpg",

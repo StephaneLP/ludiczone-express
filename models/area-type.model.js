@@ -36,8 +36,10 @@ const AreaType = (sequelize, DataTypes) => {
     }, {
         tableName: 'area_type',
         timestamps: true,
-        underscored: true
-      })
+        underscored: true,
+        createdAt: "created_at",
+        updatedAt: "updated_at",
+    })
 }
 
 module.exports = AreaType

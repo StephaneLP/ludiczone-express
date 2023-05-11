@@ -6,7 +6,7 @@ const sequelize = new Sequelize("db_funarea", "root", "", {
     host: "localhost",
     dialect: "mariadb",
     logging: false,
-    timezone: "Europe/Paris",
+    // timezone: "Europe/Paris",
 })
 
 const AreaTypeModel = require("../models/area-type.model")(sequelize, DataTypes)

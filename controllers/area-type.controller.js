@@ -1,4 +1,5 @@
 const { AreaTypeModel } = require('../db/sequelize');
+const sequelize = require('../db/sequelize')
 
 exports.findAllAreaType = (req, res) => {
     AreaTypeModel.findAll()

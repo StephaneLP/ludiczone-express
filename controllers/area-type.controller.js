@@ -1,13 +1,22 @@
 const { AreaTypeModel } = require('../db/sequelize');
+const { Op, UniqueConstraintError, ValidationError } = require("sequelize");
 const sequelize = require('../db/sequelize')
 
 exports.findAllAreaType = (req, res) => {
+    const search = req.query.search || ""
+    const sort = req.query.sort || "asc"
     let msg = ""
 
-    AreaTypeModel.findAll()
+    AreaTypeModel.findAll({
+        where: {
+            [Op.and]: [
+                {name: {[Op.like]: `%${search}%`}}
+            ]
+        },
+        order: [['name',sort]]
+        })
         .then((element) => {
             msg = "La liste des types de loisir a bien été retournée."
-            throw new Error('Division par 0 impossible')
             res.status(200).json({ success: true, message: msg, data: element })
         })
         .catch((error) => {

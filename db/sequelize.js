@@ -34,6 +34,7 @@ const initDb = () => {
                     description: element.description,
                     picture: element.picture,
                     rank: element.rank,
+                    created_at: element.created_at,
                 })
             })
         })

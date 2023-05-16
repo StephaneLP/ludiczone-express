@@ -18,7 +18,7 @@ const AreaType = (sequelize, DataTypes) => {
             allowNull: true,
         },
         picture: {
-            type: DataTypes.STRING(200),
+            type: DataTypes.STRING(50),
             allowNull: true,
         },
         rank: {
@@ -27,6 +27,7 @@ const AreaType = (sequelize, DataTypes) => {
             validate : {
                 isNumeric: {msg: "Le champ 'rank' doit être numérique."}
             },
+            defaultValue: 0,
         },
         is_active: {
             type: DataTypes.BOOLEAN,

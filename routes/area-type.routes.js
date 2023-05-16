@@ -5,6 +5,7 @@ const AreaTypeController = require('../controllers/area-type.controller')
 router
     .route('/')
     .get(AreaTypeController.findAllAreaType)
+    .post(AreaTypeController.createAreaType)
 
 router
     .route('/:id')

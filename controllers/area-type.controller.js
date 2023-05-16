@@ -2,6 +2,10 @@ const { AreaTypeModel } = require('../db/sequelize');
 const { Op, UniqueConstraintError, ValidationError } = require("sequelize");
 const sequelize = require('../db/sequelize')
 
+//////////////////////////////////////////////////////////////////////////
+// GET
+//////////////////////////////////////////////////////////////////////////
+
 exports.findAllAreaType = (req, res) => {
     const search = req.query.search || ""
     const sort = req.query.sort || "asc"
@@ -24,6 +28,39 @@ exports.findAllAreaType = (req, res) => {
             res.status(500).json({ success: false, message: msg, data: error })
         })  
 }
+
+//////////////////////////////////////////////////////////////////////////
+// CREATE
+//////////////////////////////////////////////////////////////////////////
+
+exports.createAreaType = (req, res) => {
+    const newAreaType = req.body;
+
+    AreaTypeModel.create({
+        name: newAreaType.name,
+        description: newAreaType.description,
+        picture: newAreaType.picture,
+        rank: newAreaType.rank,
+        // is_active: newAreaType.is_active,
+    })
+    .then((el) => {
+        const msg = `Un type de loisir a bien été ajouté.`
+        res.json({ message: msg, data: newAreaType})
+    })
+    .catch(error => {
+        if(error instanceof UniqueConstraintError || error instanceof ValidationError){
+            return res.status(400).json({ message: error.message, data: error })    
+        }
+        else {
+            const msg = "test"
+            return res.status(500).json({ message: error.message, data: error })    
+        }
+    })
+}
+
+//////////////////////////////////////////////////////////////////////////
+// DELETE
+//////////////////////////////////////////////////////////////////////////
 
 exports.deleteAreaType = (req, res) => {
     const id = req.params.id

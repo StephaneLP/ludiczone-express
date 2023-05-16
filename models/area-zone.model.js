@@ -18,7 +18,7 @@ const AreaZone = (sequelize, DataTypes) => {
             allowNull: true,
         },
         picture: {
-            type: DataTypes.STRING(200),
+            type: DataTypes.STRING(50),
             allowNull: true,
         },
         rank: {

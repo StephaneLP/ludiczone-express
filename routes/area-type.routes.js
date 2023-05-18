@@ -9,6 +9,8 @@ router
 
 router
     .route('/:id')
-    .delete(AreaTypeController.deleteAreaType) 
+    .get(AreaTypeController.findAreaTypeById)
+    .put(AreaTypeController.updateAreaType)
+    .delete(AreaTypeController.deleteAreaType)
 
 module.exports = router;

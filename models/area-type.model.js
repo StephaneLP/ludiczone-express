@@ -8,9 +8,9 @@ const AreaType = (sequelize, DataTypes) => {
         name: {
             type: DataTypes.STRING(50),
             allowNull: false,
-            unique: {msg: "Ce nom de type de loisir est déjà pris."},
+            unique: {msg: "Enregistrement impossible : ce nom de type de loisir est déjà pris."},
             validate: {
-                notEmpty :{msg: "Le champ 'name' ne peut pas être vide."}
+                notEmpty: {msg: "Le champ 'name' ne peut pas être vide."}
             },
         },
         description: {
@@ -38,8 +38,6 @@ const AreaType = (sequelize, DataTypes) => {
         tableName: 'area_type',
         timestamps: true,
         underscored: true,
-        createdAt: "created_at",
-        updatedAt: "updated_at",
     })
 }
 

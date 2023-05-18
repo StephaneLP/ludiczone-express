@@ -8,7 +8,7 @@ const Area = (sequelize, DataTypes) => {
         name: {
             type: DataTypes.STRING(50),
             allowNull: false,
-            unique: {msg: "Ce nom est déjà pris."},
+            // unique: {msg: "Ce nom est déjà pris."},
             validate: {
                 notEmpty :{msg: "Le champ 'name' ne peut pas être vide."}
             },
@@ -66,7 +66,9 @@ const Area = (sequelize, DataTypes) => {
     }, {
         tableName: 'area',
         timestamps: true,
-        underscored: true
+        underscored: true,
+        createdAt: "created_at",
+        updatedAt: "updated_at",
       })
 }
 

@@ -1,5 +1,37 @@
 [
     {
-        "name": "aaa"
+        "name": "Salle 1",
+        "description_short": "ceci est une description courte",
+        "description_long": "ceci est une description longue",
+        "AreaTypeId": 1,
+        "AreaZoneId": 1
+    },
+    {
+        "name": "Salle 2",
+        "description_short": "ceci est une description courte",
+        "description_long": "ceci est une description longue",
+        "AreaTypeId": 1,
+        "AreaZoneId": 2
+    },
+    {
+        "name": "Salle 3",
+        "description_short": "ceci est une description courte",
+        "description_long": "ceci est une description longue",
+        "AreaTypeId": 1,
+        "AreaZoneId": 3
+    },
+    {
+        "name": "Salle 1",
+        "description_short": "ceci est une description courte",
+        "description_long": "ceci est une description longue",
+        "AreaTypeId": 2,
+        "AreaZoneId": 1
+    },
+    {
+        "name": "Salle 2",
+        "description_short": "ceci est une description courte",
+        "description_long": "ceci est une description longue",
+        "AreaTypeId": 2,
+        "AreaZoneId": 2
     }
 ]

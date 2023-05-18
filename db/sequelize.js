@@ -1,7 +1,10 @@
+const bcrypt = require("bcrypt")
 const { Sequelize, DataTypes } = require("sequelize")
+
 const dataAreaType = require("./data/area-type.json")
 const dataAreaZone = require("./data/area-zone.json")
 const dataArea = require("./data/area.json")
+const dataUser = require("./data/user.json")
 
 const sequelize = new Sequelize("db_funarea", "root", "", {
     host: "localhost",
@@ -13,6 +16,7 @@ const sequelize = new Sequelize("db_funarea", "root", "", {
 const AreaTypeModel = require("../models/area-type.model")(sequelize, DataTypes)
 const AreaZoneModel = require("../models/area-zone.model")(sequelize, DataTypes)
 const AreaModel = require("../models/area.model")(sequelize, DataTypes)
+const UserModel = require("../models/user.model")(sequelize, DataTypes)
 
 // AreaTypeModel.hasMany(AreaModel, {
 //     foreignKey: {allowNull: false}
@@ -34,7 +38,7 @@ const initDb = () => {
         .then(() => {
             dataAreaType.forEach((element) => {
                 AreaTypeModel.create({
-                    // id: element.id,
+                    id: element.id,
                     name: element.name,
                     description: element.description,
                     picture: element.picture,
@@ -46,7 +50,7 @@ const initDb = () => {
         .then(() => {
             dataAreaZone.forEach((element) => {
                 AreaZoneModel.create({
-                    // id: element.id,
+                    id: element.id,
                     name: element.name,
                     description: element.description,
                     picture: element.picture,
@@ -65,6 +69,21 @@ const initDb = () => {
                 })
             })             
         })
+        .then(() => {
+            dataUser.forEach((element) => {
+                bcrypt.hash(element.password,10)
+                .then((hash) => {
+                    UserModel.create({
+                        first_name: element.first_name,
+                        last_name: element.last_name,
+                        nick_name: element.nick_name,
+                        email: element.email,
+                        password: hash,
+                        role: element.role,
+                    })
+                })
+            })  
+        })
         .catch((error) => console.log(error))
 }
 
@@ -72,4 +91,4 @@ sequelize.authenticate()
     .then(() => console.log("La connexion à la BDD a bien été établie"))
     .catch(error => console.error(`Impossible de se connecter à la BDD ${error}`))
 
-module.exports = { sequelize, AreaTypeModel, AreaModel, initDb }
+module.exports = { sequelize, AreaTypeModel, AreaZoneModel, AreaModel, UserModel, initDb }

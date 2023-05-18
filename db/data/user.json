@@ -1,0 +1,18 @@
+[
+    {
+        "first_name": "Stéphane",
+        "last_name": "Le Pajolec",
+        "nick_name": "admin",
+        "email": "stephane.lepajolec@lapiscine.pro",
+        "password": "Admin33Piscine",
+        "role": "admin"
+    },
+    {
+        "first_name": "Stéphane",
+        "last_name": "Le Pajolec",
+        "nick_name": "Steph",
+        "email": "stephanelepajolec@outlook.com",
+        "password": "Admin33Piscine",
+        "role": "user"
+    }    
+]

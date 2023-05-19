@@ -1,6 +1,5 @@
-const { AreaModel } = require('../db/sequelize');
-const { Op, UniqueConstraintError, ValidationError } = require("sequelize");
-const sequelize = require('../db/sequelize')
+const { AreaModel } = require('../db/sequelize')
+const { Op, UniqueConstraintError, ValidationError } = require("sequelize")
 
 //////////////////////////////////////////////////////////////////////////
 // CREATE

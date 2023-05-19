@@ -1,6 +1,5 @@
-const { AreaTypeModel } = require('../db/sequelize');
-const { Op, UniqueConstraintError, ValidationError, ForeignKeyConstraintError } = require("sequelize");
-const sequelize = require('../db/sequelize')
+const { AreaTypeModel } = require('../db/sequelize')
+const { Op, UniqueConstraintError, ValidationError, ForeignKeyConstraintError } = require("sequelize")
 
 //////////////////////////////////////////////////////////////////////////
 // GET

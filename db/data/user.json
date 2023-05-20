@@ -4,7 +4,7 @@
         "last_name": "Le Pajolec",
         "nick_name": "admin",
         "email": "stephane.lepajolec@lapiscine.pro",
-        "password": "Admin33Piscine",
+        "password": "mdp",
         "role": "admin"
     },
     {
@@ -12,7 +12,7 @@
         "last_name": "Le Pajolec",
         "nick_name": "Steph",
         "email": "stephanelepajolec@outlook.com",
-        "password": "Admin33Piscine",
+        "password": "mdp",
         "role": "user"
     }    
 ]

@@ -1,16 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const AreaTypeController = require('../controllers/area-type.controller')
+const RouteController = require('../controllers/user.controller')
 
 router
     .route('/')
     .get(AreaTypeController.findAllAreaType)
-    .post(AreaTypeController.createAreaType)
+    .post(RouteController.protect, AreaTypeController.createAreaType)
 
 router
     .route('/:id')
     .get(AreaTypeController.findAreaTypeById)
-    .put(AreaTypeController.updateAreaType)
-    .delete(AreaTypeController.deleteAreaType)
+    .put(RouteController.protect, AreaTypeController.updateAreaType)
+    .delete(RouteController.protect, AreaTypeController.deleteAreaType)
 
 module.exports = router;

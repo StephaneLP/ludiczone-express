@@ -66,7 +66,7 @@ exports.createAreaType = (req, res) => {
     })
     .then((element) => {
         msg = `Le type de loisir '${element.name}' a bien été ajouté.`
-        res.status(200).json({ success: true, message: msg, data: element})
+        res.status(200).json({ success: true, message: msg, data: element })
     })
     .catch(error => {
         if(error instanceof UniqueConstraintError){

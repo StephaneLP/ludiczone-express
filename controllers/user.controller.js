@@ -61,3 +61,34 @@ exports.login = (req, res) => {
         res.json({ success: false, message: msg, data: error })
     })
 }
+
+//////////////////////////////////////////////////////////////////////////
+// PROTECT
+//////////////////////////////////////////////////////////////////////////
+
+exports.protect = (req, res, next) => {
+    const authorizationHeader = req.headers.authorization
+    let msg = ""
+
+    if(!authorizationHeader) {
+        msg = "Un jeton est nécessaire pour acceder à la ressource"
+        return res.status(403).json({ success: false, message: msg, data: {} })
+    }
+    
+    try {
+        const token = authorizationHeader.split(' ')[1]
+        if(token === "null") {
+            msg = "Un jeton est nécessaire pour acceder à la ressource"
+            console.log(msg)
+            return res.status(403).json({ success: false, message: msg, data: {} })
+        }
+        const decoded = jwt.verify(token, privateKey)
+        req.userId = decoded.data
+    }
+    catch(error) {
+        msg = "Le jeton n'est pas valide"
+        return res.status(403).json({ success: false, message: msg, data: error })
+    }
+
+    return next()
+}

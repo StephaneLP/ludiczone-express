@@ -21,23 +21,28 @@ exports.login = (req, res) => {
 
     if(!username || !password) {
         msg = "Veuillez renseigner un identifiant et un mot de passe."
-        return res.status(400).json({success: false, message: msg, data: {}})
+        return res.status(400).json({ success: false, message: msg, data: {} })
     }
 
     UserModel.findOne({
-        where: {nick_name: username}
+        where: {
+            [Op.or]: [
+                {nick_name: username},
+                {email: username}
+            ]       
+        }
     })
     .then((element) => {
         if(!element) {
-            msg = "L'utilisateur n'existe pas (Erreur 404)"
-            return res.status(404).json({success: false, message: msg, data: {}})
+            msg = `Le pseudo ou l'email est incorrect. Veuillez essayer à nouveau.`
+            return res.status(404).json({ success: false, message: msg, data: {} })
         }
 
         bcrypt.compare(password,element.password)
             .then(isValid => {
                 if(!isValid) {
-                    msg = "Le mot de passe est erroné !"
-                    return res.status(400).json({message: msg})
+                    msg = "Le mot de passe saisi est incorrect. Veuillez essayer à nouveau."
+                    return res.status(400).json({ success: false, message: msg, data: {} })
                 }
 
                 // Json Web Token
@@ -46,13 +51,13 @@ exports.login = (req, res) => {
                     username: element.nick_name,
                 }, privateKey, { expiresIn: "30000"})
 
-                msg = "L'utilisateur a été connecté avec succès"
-                element.password = "hidden"
-                return res.json({success: true, message: msg, data: element, token: token})
+                msg = "L'utilisateur a été connecté avec succès."
+                element.password = "Hidden"
+                res.status(200).json({ success: true, message: msg, data: element, token: token })
             })
     })
     .catch((error) => {
-        msg = "L'utilisateur n'a pas pu se connecter"
-        res.json({ success: false, message: msg, data: error})
+        msg = "L'utilisateur n'a pas pu se connecter (Erreur 500)."
+        res.json({ success: false, message: msg, data: error })
     })
 }

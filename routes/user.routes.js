@@ -8,8 +8,8 @@ router
     // .get(UserController.findAllUser)
     // .post(UserController.createUser)
 
-// router
-//     .route('/:id')
+router
+    .route('/:id')
 //     .get(UserController.findUserById)
 //     .put(UserController.updateUser)
 //     .delete(UserController.deleteUser)
@@ -17,5 +17,9 @@ router
 router
     .route('/login')
     .post(UserController.login)
+
+router
+    .route('/role')
+    .get(UserController.getRoleByToken)
 
 module.exports = router;

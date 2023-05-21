@@ -1,5 +1,6 @@
 [
     {
+        "id": 1,
         "first_name": "Stéphane",
         "last_name": "Le Pajolec",
         "nick_name": "admin",
@@ -8,6 +9,7 @@
         "role": "admin"
     },
     {
+        "id": 2,
         "first_name": "Stéphane",
         "last_name": "Le Pajolec",
         "nick_name": "Steph",

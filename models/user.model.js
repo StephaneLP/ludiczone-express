@@ -1,3 +1,5 @@
+const userRoles = ['user', 'admin', 'superadmin']
+
 const User =  (sequelize, DataTypes) => {
     return sequelize.define("User", {
         id: {
@@ -49,6 +51,16 @@ const User =  (sequelize, DataTypes) => {
                 notEmpty: {msg: "Le champ 'rôle' ne peut pas être vide."}
             },
             defaultValue: "user",
+            validate: {
+                areRolesValid(role){
+                    if(!role){
+                    throw new Error('Un utilisateur doit avoir au moins un rôle')
+                    }
+                    if(!userRoles.includes(role)){
+                        throw new Error(`Les rôles d'un utilisateur doivent appartenir à la liste suivante : ${userRoles}`)
+                    }
+                }
+            }
         },
     }, {
         tableName: 'user',

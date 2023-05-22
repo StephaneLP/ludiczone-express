@@ -74,7 +74,7 @@ const initDb = () => {
                 bcrypt.hash(element.password,10)
                 .then((hash) => {
                     UserModel.create({
-                        i: element.id,
+                        id: element.id,
                         first_name: element.first_name,
                         last_name: element.last_name,
                         nick_name: element.nick_name,

@@ -44,8 +44,7 @@ exports.login = (req, res) => {
                 // Json Web Token
                 const token = jwt.sign({
                     data: element.id,
-                    // username: element.nick_name,
-                }, privateKey, { expiresIn: "3000000"})
+                }, privateKey, { expiresIn: "48h"})
 
                 msg = "L'utilisateur a été connecté avec succès."
                 element.password = "Hidden"
@@ -67,22 +66,22 @@ exports.protect = (req, res, next) => {
     let msg = ""
 
     if(!authorizationHeader) {
-        msg = "Un jeton est nécessaire pour acceder à la ressource."
-        return res.status(403).json({ success: false, message: msg, data: {} })
+        msg = "Un jeton est nécessaire pour acceder à la ressource (Erreur 401)."
+        return res.status(401).json({ success: false, message: msg, data: {} })
     }
     
     try {
         const token = authorizationHeader.split(' ')[1]
         if(token === "null") {
-            msg = "Un jeton est nécessaire pour acceder à la ressource."
-            return res.status(403).json({ success: false, message: msg, data: {} })
+            msg = "Un jeton est nécessaire pour acceder à la ressource (Erreur 401)."
+            return res.status(401).json({ success: false, message: msg, data: {} })
         }
         const decoded = jwt.verify(token, privateKey)
         req.userId = decoded.data
     }
     catch(error) {
-        msg = "Le jeton n'est pas valide."
-        return res.status(403).json({ success: false, message: msg, data: error })
+        msg = "Le jeton n'est pas valide (Erreur 401)."
+        return res.status(401).json({ success: false, message: msg, data: error })
     }
     return next()
 }
@@ -92,17 +91,19 @@ exports.protect = (req, res, next) => {
 //////////////////////////////////////////////////////////////////////////
 
 exports.restrictTo = (roles) => {
+    let msg = ""
+
     return (req, res, next) => {
         UserModel.findByPk(req.userId)
             .then(user => {
                 if(!user || !roles.includes(user.role)) {
-                    const msg = "Vos droits sont insuffisants (Erreur 403)."
-                    return res.status(423).json({ success: false, message: msg, data: {} })
+                    msg = "Vos droits sont insuffisants (Erreur 403)."
+                    return res.status(403).json({ success: false, message: msg, data: {} })
                 }
                 return next()
             })
             .catch(error => {
-                const msg = "Erreur survenue lors de la vérification du rôle (Erreur 500)."
+                msg = "Erreur survenue lors de la vérification du rôle (Erreur 500)."
                 res.status(500).json({ success: false, message: msg, data: error })
             })
     }
@@ -113,19 +114,18 @@ exports.restrictTo = (roles) => {
 //////////////////////////////////////////////////////////////////////////
 
 exports.getRoleByToken = (req, res) => {
-console.log("role")
     const authorizationHeader = req.headers.authorization
     let msg = ""
     if(!authorizationHeader) {
-        msg = "Un jeton est nécessaire pour acceder au role du user."
-        return res.status(403).json({ success: false, message: msg, data: "" })
+        msg = "Un jeton est nécessaire pour acceder au role du user (Erreur 401)."
+        return res.status(401).json({ success: false, message: msg, data: "" })
     }
     
     try {
         const token = authorizationHeader.split(' ')[1]
         if(token === "null") {
-            msg = "Un jeton est nécessaire pour acceder au role du user."
-            return res.status(403).json({ success: false, message: msg, data: "" })
+            msg = "Un jeton est nécessaire pour acceder au role du user (Erreur 401)."
+            return res.status(401).json({ success: false, message: msg, data: "" })
         }
         const decoded = jwt.verify(token, privateKey)
         const id = decoded.data
@@ -147,7 +147,7 @@ console.log("role")
             }) 
     }
     catch(error) {
-        msg = "Impossible de vérifier le rôle du user (Erreur 500)."
-        return res.status(500).json({ success: false, message: msg, data: error })
+        msg = "Le jeton n'est pas valide (Erreur 401)."
+        return res.status(401).json({ success: false, message: msg, data: error })
     }
 }

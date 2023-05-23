@@ -34,10 +34,6 @@ const AreaZone = (sequelize, DataTypes) => {
             allowNull: false,
             defaultValue: true,
         },
-        // createdAt: {
-        //     type: DataTypes.DATE,
-        //     allowNull: false,
-        // }
     }, {
         tableName: 'area_zone',
         timestamps: true,

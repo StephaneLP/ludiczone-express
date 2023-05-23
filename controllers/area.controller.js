@@ -1,5 +1,34 @@
 const { AreaModel } = require('../db/sequelize')
-const { Op, UniqueConstraintError, ValidationError } = require("sequelize")
+const { Op, UniqueConstraintError, ValidationError, ForeignKeyConstraintError } = require("sequelize")
+
+//////////////////////////////////////////////////////////////////////////
+// GET
+//////////////////////////////////////////////////////////////////////////
+
+exports.findAreaByFk = (req, res) => {
+    const search = req.query.search || ""
+    const sort = req.query.sort || "asc"
+    const id = req.query.id || 1
+    let msg = ""
+    console.log("id",id)
+    AreaModel.findAll({
+        where: {
+            [Op.and]: [
+                {name: {[Op.like]: `%${search}%`}},
+                {AreaZoneId: id}
+            ]
+        },
+        order: [['name',sort]]
+        })
+        .then((element) => {
+            msg = "La liste des salles a bien été retournée."
+            res.status(200).json({ success: true, message: msg, data: element })
+        })
+        .catch((error) => {
+            msg = "Impossible de charger la liste des salles (Erreur 500)."
+            res.status(500).json({ success: false, message: msg, data: error })
+        })  
+}
 
 //////////////////////////////////////////////////////////////////////////
 // CREATE

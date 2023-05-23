@@ -1,4 +1,4 @@
-const { AreaZoneModel } = require('../db/sequelize')
+const { AreaZoneModel, AreaUserModel } = require('../db/sequelize')
 const { Op, UniqueConstraintError, ValidationError, ForeignKeyConstraintError } = require("sequelize")
 
 //////////////////////////////////////////////////////////////////////////

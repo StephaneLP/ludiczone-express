@@ -8,7 +8,7 @@ const AreaZone = (sequelize, DataTypes) => {
         name: {
             type: DataTypes.STRING(100),
             allowNull: false,
-            unique: {msg: "Ce nom de zone est déjà pris."},
+            unique: {msg: "Enregistrement impossible : ce nom de zone est déjà pris."},
             validate: {
                 notEmpty :{msg: "Le champ 'name' ne peut pas être vide."}
             },
@@ -33,10 +33,14 @@ const AreaZone = (sequelize, DataTypes) => {
             allowNull: false,
             defaultValue: true,
         },
+        // createdAt: {
+        //     type: DataTypes.DATE,
+        //     allowNull: false,
+        // }
     }, {
         tableName: 'area_zone',
         timestamps: true,
-        underscored: true
+        underscored: true,
       })
 }
 

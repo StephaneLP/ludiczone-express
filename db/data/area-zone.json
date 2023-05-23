@@ -3,98 +3,112 @@
         "id": 1,
         "name": "Bordeaux Maritime",
         "description": "",
-        "picture": "",
-        "rank": 0
+        "picture": "bdx-maritime.jpg",
+        "rank": 0,
+        "created_at": "2023-05-08 13:00:00"
     },
     {
         "id": 2,
         "name": "Bordeaux La Bastide",
         "description": "",
-        "picture": "",
-        "rank": 0
+        "picture": "bdx-labastide.jpg",
+        "rank": 0,
+        "created_at": "2023-05-08 13:00:00"
     },
     {
         "id": 3,
-        "name": "Bordeaux Chartrons - Grand Parc - Jardin Public",
+        "name": "Bordeaux Chartrons - Jardin Public",
         "description": "",
-        "picture": "",
-        "rank": 0
+        "picture": "bdx-chartrons.jpg",
+        "rank": 0,
+        "created_at": "2023-05-09 13:00:00"
     },
     {
         "id": 4,
         "name": "Bordeaux Centre",
         "description": "",
-        "picture": "",
-        "rank": 0
+        "picture": "bdx-centre.jpg",
+        "rank": 0,
+        "created_at": "2023-05-10 13:00:00"
     },
     {
         "id": 5,
         "name": "Bordeaux Caudéran",
         "description": "",
-        "picture": "",
-        "rank": 0
+        "picture": "bdx-cauderan.jpg",
+        "rank": 0,
+        "created_at": "2023-05-10 13:00:00"
     },
     {
         "id": 6,
-        "name": "Bordeaux Saint Augustin - Tauzin - Alphonse Dupeux",
+        "name": "Bordeaux Saint Augustin - Tauzin",
         "description": "",
-        "picture": "",
-        "rank": 0
+        "picture": "bdx-staugustin.jpg",
+        "rank": 0,
+        "created_at": "2023-05-10 13:00:00"
     },
     {
         "id": 7,
         "name": "Bordeaux Nansouty - Saint-Genès",
         "description": "",
-        "picture": "",
-        "rank": 0
+        "picture": "bdx-nansouty.jpg",
+        "rank": 0,
+        "created_at": "2023-05-10 13:00:00"
     },
     {
         "id": 8,
         "name": "Bordeaux Sud",
         "description": "",
-        "picture": "",
-        "rank": 0
+        "picture": "bdx-sud.jpg",
+        "rank": 0,
+        "created_at": "2023-05-12 13:00:00"
     },
     {
         "id": 9,
         "name": "Le Bouscat - Bruges",
         "description": "",
-        "picture": "",
-        "rank": 0
+        "picture": "le-bouscat.jpg",
+        "rank": 0,
+        "created_at": "2023-05-14 13:00:00"
     },
     {
         "id": 10,
         "name": "Mérignac",
         "description": "",
-        "picture": "",
-        "rank": 0
+        "picture": "merignac.jpg",
+        "rank": 0,
+        "created_at": "2023-05-14 13:00:00"
     },
     {
         "id": 11,
         "name": "Pessac",
         "description": "",
-        "picture": "",
-        "rank": 0
+        "picture": "pessac.jpg",
+        "rank": 0,
+        "created_at": "2023-05-18 13:00:00"
     },
     {
         "id": 12,
         "name": "Talence - Bègles",
         "description": "",
-        "picture": "",
-        "rank": 0
+        "picture": "talence.jpg",
+        "rank": 0,
+        "created_at": "2023-05-18 13:00:00"
     },
     {
         "id": 13,
         "name": "Lormont - Cenon - Floirac",
         "description": "",
-        "picture": "",
-        "rank": 0
+        "picture": "lormont.jpg",
+        "rank": 0,
+        "created_at": "2023-05-19 13:00:00"
     },    
     {
         "id": 14,
         "name": "Aglomération Extra Rocade",
         "description": "",
-        "picture": "",
-        "rank": 0
+        "picture": "bdx-environs.jpg",
+        "rank": 0,
+        "created_at": "2023-05-20 13:00:00"
     }
 ]

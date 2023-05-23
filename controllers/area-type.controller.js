@@ -20,6 +20,7 @@ exports.findAllAreaType = (req, res) => {
         })
         .then((element) => {
             msg = "La liste des types de loisir a bien été retournée."
+            console.log(element)
             res.status(200).json({ success: true, message: msg, data: element })
         })
         .catch((error) => {
@@ -61,8 +62,6 @@ exports.createAreaType = (req, res) => {
         name: newAreaType.name,
         description: newAreaType.description,
         picture: newAreaType.picture,
-        // rank: newAreaType.rank,
-        // is_active: newAreaType.is_active,
     })
     .then((element) => {
         msg = `Le type de loisir '${element.name}' a bien été ajouté.`

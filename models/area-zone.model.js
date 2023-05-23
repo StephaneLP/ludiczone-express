@@ -6,7 +6,7 @@ const AreaZone = (sequelize, DataTypes) => {
             autoIncrement: true,
         },
         name: {
-            type: DataTypes.STRING(100),
+            type: DataTypes.STRING(50),
             allowNull: false,
             unique: {msg: "Enregistrement impossible : ce nom de zone est déjà pris."},
             validate: {
@@ -27,6 +27,7 @@ const AreaZone = (sequelize, DataTypes) => {
             validate : {
                 isNumeric: {msg: "Le champ 'rank' doit être numérique."}
             },
+            defaultValue: 0,
         },
         is_active: {
             type: DataTypes.BOOLEAN,
@@ -41,6 +42,8 @@ const AreaZone = (sequelize, DataTypes) => {
         tableName: 'area_zone',
         timestamps: true,
         underscored: true,
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
       })
 }
 

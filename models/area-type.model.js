@@ -34,7 +34,7 @@ const AreaType = (sequelize, DataTypes) => {
             allowNull: false,
             defaultValue: true,
         },
-        // createdAt: {
+        // created_at: {
         //     type: DataTypes.DATE,
         //     allowNull: false,
         // }
@@ -42,6 +42,8 @@ const AreaType = (sequelize, DataTypes) => {
         tableName: 'area_type',
         timestamps: true,
         underscored: true,
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
     })
 }
 

@@ -43,7 +43,7 @@ const initDb = () => {
                     description: element.description,
                     picture: element.picture,
                     rank: element.rank,
-                    // createdAt: element.created_at,
+                    created_at: element.created_at,
                 })
             })
         })
@@ -55,7 +55,7 @@ const initDb = () => {
                     description: element.description,
                     picture: element.picture,
                     rank: element.rank,
-                    // createdAt: element.created_at,
+                    created_at: element.created_at,
                 })
             })
         })

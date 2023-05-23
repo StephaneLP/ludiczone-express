@@ -20,7 +20,6 @@ exports.findAllAreaType = (req, res) => {
         })
         .then((element) => {
             msg = "La liste des types de loisir a bien été retournée."
-            console.log(element)
             res.status(200).json({ success: true, message: msg, data: element })
         })
         .catch((error) => {

@@ -21,14 +21,14 @@
         "AreaZoneId": 3
     },
     {
-        "name": "Salle 1",
+        "name": "Salle 4",
         "description_short": "ceci est une description courte",
         "description_long": "ceci est une description longue",
         "AreaTypeId": 2,
         "AreaZoneId": 1
     },
     {
-        "name": "Salle 2",
+        "name": "Salle 5",
         "description_short": "ceci est une description courte",
         "description_long": "ceci est une description longue",
         "AreaTypeId": 2,

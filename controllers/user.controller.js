@@ -38,7 +38,7 @@ exports.login = (req, res) => {
             .then(isValid => {
                 if(!isValid) {
                     msg = "Le mot de passe saisi est incorrect. Veuillez essayer à nouveau."
-                    return res.status(400).json({ success: false, message: msg, data: {} })
+                    return res.status(403).json({ success: false, message: msg, data: {} })
                 }
 
                 // Json Web Token

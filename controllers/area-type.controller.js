@@ -68,11 +68,11 @@ exports.createAreaType = (req, res) => {
     })
     .catch(error => {
         if(error instanceof UniqueConstraintError){
-            res.status(400).json({ success: false, message: error.message, data: error })    
+            res.status(409).json({ success: false, message: error.message, data: error })    
         }        
         else if(error instanceof ValidationError){
             msg = "Demande non valide : erreur de validation (Erreur 400)."
-            res.status(400).json({ success: false, message: error.message, data: error })    
+            res.status(409).json({ success: false, message: error.message, data: error })    
         }
         else {
             msg = "Impossible de créer le type de loisir (Erreur 500)."
@@ -104,11 +104,11 @@ exports.updateAreaType = (req, res) => {
     })
     .catch(error => {
         if(error instanceof UniqueConstraintError){
-            res.status(400).json({ success: false, message: error.message, data: error })    
+            res.status(409).json({ success: false, message: error.message, data: error })    
         }        
         else if(error instanceof ValidationError){
             msg = "Demande non valide : erreur de validation (Erreur 400)."
-            res.status(400).json({ success: false, message: error.message, data: error })    
+            res.status(409).json({ success: false, message: error.message, data: error })    
         }
         else {
             msg = "Impossible de modifier le type de loisir (Erreur 500)."

@@ -1,36 +1,65 @@
 [
     {
-        "name": "Salle 1",
+        "name": "Virtual Room",
         "description_short": "ceci est une description courte",
         "description_long": "ceci est une description longue",
+        "picture": "virtual-room.jpg",
         "AreaTypeId": 1,
         "AreaZoneId": 1
     },
     {
-        "name": "Salle 2",
+        "name": "Vortex Experience",
         "description_short": "ceci est une description courte",
         "description_long": "ceci est une description longue",
+        "picture": "vortex-experience.jpg",
         "AreaTypeId": 1,
         "AreaZoneId": 2
     },
     {
-        "name": "Salle 3",
+        "name": "E.V.A.",
         "description_short": "ceci est une description courte",
         "description_long": "ceci est une description longue",
+        "picture": "eva.jpg",
         "AreaTypeId": 1,
-        "AreaZoneId": 3
+        "AreaZoneId": 1
     },
     {
-        "name": "Salle 4",
+        "name": "Dream Away",
         "description_short": "ceci est une description courte",
         "description_long": "ceci est une description longue",
+        "picture": "dreamaway.jpg",
+        "AreaTypeId": 1,
+        "AreaZoneId": 2
+    },
+    {
+        "name": "Clock Escape",
+        "description_short": "ceci est une description courte",
+        "description_long": "ceci est une description longue",
+        "picture": "clock_escape.jpg",
         "AreaTypeId": 2,
         "AreaZoneId": 1
     },
     {
-        "name": "Salle 5",
+        "name": "Tête Chercheuse",
         "description_short": "ceci est une description courte",
         "description_long": "ceci est une description longue",
+        "picture": "tete_chercheuse.jpg",
+        "AreaTypeId": 2,
+        "AreaZoneId": 2
+    },
+    {
+        "name": "How Many Doors ?",
+        "description_short": "ceci est une description courte",
+        "description_long": "ceci est une description longue",
+        "picture": "hmd.jpg",
+        "AreaTypeId": 2,
+        "AreaZoneId": 1
+    },
+    {
+        "name": "Otopia Escape Yourself",
+        "description_short": "ceci est une description courte",
+        "description_long": "ceci est une description longue",
+        "picture": "otopia.jpg",
         "AreaTypeId": 2,
         "AreaZoneId": 2
     }

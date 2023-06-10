@@ -65,6 +65,7 @@ const initDb = () => {
                     name: element.name,
                     description_short: element.description_short,
                     description_long: element.description_long,
+                    picture: element.picture,
                     AreaTypeId: element.AreaTypeId,
                     AreaZoneId: element.AreaZoneId,
                 })

@@ -4,7 +4,7 @@ const AreaController = require('../controllers/area.controller')
 
 router
     .route('/')
-    .get(AreaController.findAreaByFk)
+    .get(AreaController.findAllArea)
     .post(AreaController.createArea)
 
 // router

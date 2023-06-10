@@ -10,7 +10,6 @@ const privateKey = require("../authorization/privateKey")
 //////////////////////////////////////////////////////////////////////////
 
 exports.login = (req, res) => {
-    console.log("login")
     const username = req.body.username
     const password = req.body.password
 
@@ -29,15 +28,15 @@ exports.login = (req, res) => {
     })
     .then((element) => {
         if(!element) {
-            const msg = `Le pseudo ou l'email est incorrect. Veuillez essayer à nouveau.`
-            return res.status(404).json({ success: false, message: msg, data: {} })
+            const msg = "L'identifiant ou le mot de passe est incorrect. Veuillez essayer à nouveau."
+            return res.status(401).json({ success: false, message: msg, data: {} })
         }
 
         bcrypt.compare(password,element.password)
             .then(isValid => {
                 if(!isValid) {
-                    const msg = "Le mot de passe saisi est incorrect. Veuillez essayer à nouveau."
-                    return res.status(403).json({ success: false, message: msg, data: {} })
+                    const msg = "L'identifiant ou le mot de passe est incorrect. Veuillez essayer à nouveau."
+                    return res.status(401).json({ success: false, message: msg, data: {} })
                 }
 
                 // Json Web Token
@@ -80,7 +79,7 @@ exports.getRoleByToken = (req, res) => {
         UserModel.findByPk(id)
             .then(user => {
                 if(!user) {
-                    const msg = `Aucun user n'a été retourné pour l'id : ${id}.`
+                    const msg = "Le user n'a pas les droits requis."
                     return res.status(403).json({ success: false, message: msg, data: "" })
                 }
                 else {

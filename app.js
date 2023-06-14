@@ -3,6 +3,7 @@ const morgan = require('morgan')
 const serveFavicon = require('serve-favicon')
 const cors = require('cors')
 const sequelize = require('./db/sequelize')
+const data = require('./db/data')
 const AreaTypeRouter = require('./routes/area-type.routes')
 const AreaZoneRouter = require('./routes/area-zone.routes')
 const AreaRouter = require('./routes/area.routes')
@@ -23,4 +24,4 @@ app
         console.log(`L'app sur le port ${port}`)
     }) 
 
-sequelize.initDb()
+data.initDb()

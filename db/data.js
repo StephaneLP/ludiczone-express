@@ -46,7 +46,7 @@ const setAreaType = () => {
                     created_at: element.created_at,
                 })
                 .then((el) => { console.log("AREA_TYPE : " + el.id + " - " + el.name )}) 
-            )          
+            )
         }
         tabPromesses.push(creer())
     })
@@ -73,7 +73,7 @@ const setAreaZone = () => {
                     created_at: element.created_at,
                 })
                 .then((el) => { console.log("AREA_ZONE : " + el.id + " - " + el.name )})
-            )          
+            )
         }
         tabPromesses.push(creer())
     })
@@ -100,7 +100,7 @@ const setArea = () => {
                     AreaZoneId: element.AreaZoneId,
                 })
                 .then((el) => { console.log("AREA : " + el.id + " - " + el.name )})
-            )          
+            )
         }
         tabPromesses.push(creer())
     })
@@ -116,26 +116,28 @@ const setUser = () => {
     const tabPromesses = []
 
     dataUser.forEach((element) => {
-        bcrypt.hash(element.password,10)
-            .then((hash) => {
-                const creer = function() {
-                    return(
-                        UserModel.create({
-                            id: element.id,
-                            first_name: element.first_name,
-                            last_name: element.last_name,
-                            nick_name: element.nick_name,
-                            email: element.email,
-                            password: hash,
-                            role: element.role,
-                        })
-                        .then((el) => { console.log("USER : " + el.id + " - " + el.nick_name )})
-                    )          
-                }
-                tabPromesses.push(creer())
-            })
+        const creer = function() {
+            return(
+                bcrypt.hash(element.password,10)
+                    .then((hash) => {
+                        return(
+                            UserModel.create({
+                                id: element.id,
+                                first_name: element.first_name,
+                                last_name: element.last_name,
+                                nick_name: element.nick_name,
+                                email: element.email,
+                                password: hash,
+                                role: element.role,
+                            })
+                            .then((el) => { console.log("USER : " + el.id + " - " + el.nick_name )})                            
+                        )
+                })
+            )
+        }
+        tabPromesses.push(creer())
     })
-
+    
     return tabPromesses
 }
 

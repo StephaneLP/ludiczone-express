@@ -1,5 +1,3 @@
-
-
 exports.control = (req, res, next) => {
     const newAreaType = req.body;
 

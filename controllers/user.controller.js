@@ -82,10 +82,9 @@ exports.getRoleByToken = (req, res) => {
                     const msg = "Le user n'a pas les droits requis."
                     return res.status(403).json({ success: false, message: msg, data: "" })
                 }
-                else {
-                    const msg = `Le role a bien été retourné pour l'id : ${id}.`
-                    return res.status(200).json({ success: true, message: msg, data: user.role })
-                }
+                const msg = `Le role a bien été retourné pour l'id : ${id}.`
+                return res.status(200).json({ success: true, message: msg, data: user.role })
+
             })
             .catch(error => {
                 res.status(500).json({ success: false, message: error.message, data: error })
@@ -103,12 +102,12 @@ exports.getRoleByToken = (req, res) => {
 
 exports.protect = (req, res, next) => {
     const authorizationHeader = req.headers.authorization
-
+console.log("ok1",req.headers)
     if(!authorizationHeader) {
         const msg = "Un jeton est nécessaire pour acceder à la ressource."
         return res.status(401).json({ success: false, message: msg, data: {} })
     }
-    
+    console.log("ok2")
     try {
         const token = authorizationHeader.split(' ')[1]
         if(token === "null") {

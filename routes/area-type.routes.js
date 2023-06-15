@@ -7,10 +7,14 @@ const DataController = require('../controllers/data.controller')
 router
     .route('/')
     .get(AreaTypeController.findAllAreaType)
-    .post(DataController.checkAreaType, UserController.protect, UserController.restrictTo(["admin"]), AreaTypeController.createAreaType)
 
 router
-    .route('/:id')
+    .route('/admin')
+    .get(UserController.protect, UserController.restrictTo(["admin"]), AreaTypeController.findAllAreaType)
+    .post(UserController.protect, UserController.restrictTo(["admin"]), AreaTypeController.createAreaType)
+
+router
+    .route('/admin/:id')
     .get(UserController.protect, UserController.restrictTo(["admin"]), AreaTypeController.findAreaTypeById)
     .put(UserController.protect, UserController.restrictTo(["admin"]), AreaTypeController.updateAreaType)
     .delete(UserController.protect, UserController.restrictTo(["admin"]), AreaTypeController.deleteAreaType)

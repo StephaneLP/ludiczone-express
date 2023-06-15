@@ -12,13 +12,16 @@ const initDb = () => {
         .then(() => {
             Promise.all(setAreaType())
                 .then(() => {
+                    console.log("Fin de l'import des types");
                     Promise.all(setAreaZone())
                     .then(() => {
+                        console.log("Fin de l'import des zones");
                         Promise.all(setArea())
                         .then(() => {
+                            console.log("Fin de l'import des salles");
                             Promise.all(setUser())
                             .then(() => {
-                                console.log("Import des données terminée.");
+                                console.log("Fin de l'import des users");
                             })   
                         })
                     })
@@ -45,7 +48,6 @@ const setAreaType = () => {
                     rank: element.rank,
                     created_at: element.created_at,
                 })
-                .then((el) => { console.log("AREA_TYPE : " + el.id + " - " + el.name )}) 
             )
         }
         tabPromesses.push(creer())
@@ -72,7 +74,6 @@ const setAreaZone = () => {
                     rank: element.rank,
                     created_at: element.created_at,
                 })
-                .then((el) => { console.log("AREA_ZONE : " + el.id + " - " + el.name )})
             )
         }
         tabPromesses.push(creer())
@@ -99,7 +100,6 @@ const setArea = () => {
                     AreaTypeId: element.AreaTypeId,
                     AreaZoneId: element.AreaZoneId,
                 })
-                .then((el) => { console.log("AREA : " + el.id + " - " + el.name )})
             )
         }
         tabPromesses.push(creer())
@@ -129,8 +129,7 @@ const setUser = () => {
                                 email: element.email,
                                 password: hash,
                                 role: element.role,
-                            })
-                            .then((el) => { console.log("USER : " + el.id + " - " + el.nick_name )})                            
+                            })                         
                         )
                 })
             )

@@ -1,4 +1,4 @@
-exports.control = (req, res, next) => {
+exports.checkAreaType = (req, res, next) => {
     const newAreaType = req.body;
 
     console.log(newAreaType)

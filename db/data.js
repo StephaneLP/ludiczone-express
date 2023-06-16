@@ -12,16 +12,13 @@ const initDb = () => {
         .then(() => {
             Promise.all(setAreaType())
                 .then(() => {
-                    console.log("Fin de l'import des types");
                     Promise.all(setAreaZone())
                     .then(() => {
-                        console.log("Fin de l'import des zones");
                         Promise.all(setArea())
                         .then(() => {
-                            console.log("Fin de l'import des salles");
                             Promise.all(setUser())
                             .then(() => {
-                                console.log("Fin de l'import des users");
+                                console.log("Import des données terminé (initDB).");
                             })   
                         })
                     })
@@ -38,19 +35,15 @@ const setAreaType = () => {
     const tabPromesses = []
 
     dataAreaType.forEach((element) => {
-        const creer = function() {
-            return(
-                AreaTypeModel.create({
-                    id: element.id,
-                    name: element.name,
-                    description: element.description,
-                    picture: element.picture,
-                    rank: element.rank,
-                    created_at: element.created_at,
-                })
-            )
-        }
-        tabPromesses.push(creer())
+        const creer = AreaTypeModel.create({
+            id: element.id,
+            name: element.name,
+            description: element.description,
+            picture: element.picture,
+            rank: element.rank,
+            created_at: element.created_at,
+        })
+        tabPromesses.push(creer)
     })
 
     return tabPromesses
@@ -64,19 +57,15 @@ const setAreaZone = () => {
     const tabPromesses = []
 
     dataAreaZone.forEach((element) => {
-        const creer = function() {
-            return(
-                AreaZoneModel.create({
-                    id: element.id,
-                    name: element.name,
-                    description: element.description,
-                    picture: element.picture,
-                    rank: element.rank,
-                    created_at: element.created_at,
-                })
-            )
-        }
-        tabPromesses.push(creer())
+        const creer = AreaZoneModel.create({
+            id: element.id,
+            name: element.name,
+            description: element.description,
+            picture: element.picture,
+            rank: element.rank,
+            created_at: element.created_at,
+        })
+        tabPromesses.push(creer)
     })
 
     return tabPromesses
@@ -90,19 +79,15 @@ const setArea = () => {
     const tabPromesses = []
 
     dataArea.forEach((element) => {
-        const creer = function() {
-            return(
-                AreaModel.create({
-                    name: element.name,
-                    description_short: element.description_short,
-                    description_long: element.description_long,
-                    picture: element.picture,
-                    AreaTypeId: element.AreaTypeId,
-                    AreaZoneId: element.AreaZoneId,
-                })
-            )
-        }
-        tabPromesses.push(creer())
+        const creer = AreaModel.create({
+            name: element.name,
+            description_short: element.description_short,
+            description_long: element.description_long,
+            picture: element.picture,
+            AreaTypeId: element.AreaTypeId,
+            AreaZoneId: element.AreaZoneId,
+        })
+        tabPromesses.push(creer)
     })
 
     return tabPromesses
@@ -116,25 +101,21 @@ const setUser = () => {
     const tabPromesses = []
 
     dataUser.forEach((element) => {
-        const creer = function() {
-            return(
-                bcrypt.hash(element.password,10)
-                    .then((hash) => {
-                        return(
-                            UserModel.create({
-                                id: element.id,
-                                first_name: element.first_name,
-                                last_name: element.last_name,
-                                nick_name: element.nick_name,
-                                email: element.email,
-                                password: hash,
-                                role: element.role,
-                            })                         
-                        )
-                })
-            )
-        }
-        tabPromesses.push(creer())
+        const creer = bcrypt.hash(element.password,10)
+            .then((hash) => {
+                return(
+                    UserModel.create({
+                        id: element.id,
+                        first_name: element.first_name,
+                        last_name: element.last_name,
+                        nick_name: element.nick_name,
+                        email: element.email,
+                        password: hash,
+                        role: element.role,
+                    })                         
+                )
+            })
+        tabPromesses.push(creer)
     })
     
     return tabPromesses

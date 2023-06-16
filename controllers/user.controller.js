@@ -42,7 +42,7 @@ exports.login = (req, res) => {
                 // Json Web Token
                 const token = jwt.sign({
                     data: element.id,
-                }, privateKey, { expiresIn: "20s"})
+                }, privateKey, { expiresIn: "48h"})
 
                 const msg = "L'utilisateur a été connecté avec succès."
                 element.password = "Hidden"
@@ -102,12 +102,12 @@ exports.getRoleByToken = (req, res) => {
 
 exports.protect = (req, res, next) => {
     const authorizationHeader = req.headers.authorization
-console.log("ok1",req.headers)
+
     if(!authorizationHeader) {
         const msg = "Un jeton est nécessaire pour acceder à la ressource."
         return res.status(401).json({ success: false, message: msg, data: {} })
     }
-    console.log("ok2")
+
     try {
         const token = authorizationHeader.split(' ')[1]
         if(token === "null") {

@@ -7,8 +7,4 @@ router
     .get(AreaController.findAllArea)
     .post(AreaController.createArea)
 
-// router
-//     .route('/:id')
-//     .delete(AreaTypeController.deleteAreaType) 
-
 module.exports = router;

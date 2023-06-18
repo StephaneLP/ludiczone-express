@@ -3,9 +3,13 @@ const router = express.Router();
 const AuthController = require('../controllers/auth.controller')
 const AreaTypeController = require('../controllers/area-type.controller')
 
+// PAGES VISITEURS ///////////////////////////////////////////////////////
+
 router
     .route('/')
     .get(AreaTypeController.findAllAreaType)
+
+// PAGES ADMINISTRATEURS /////////////////////////////////////////////////
 
 router
     .route("/admin/")

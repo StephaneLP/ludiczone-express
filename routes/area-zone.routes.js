@@ -3,9 +3,21 @@ const router = express.Router();
 const AreaZoneController = require('../controllers/area-zone.controller')
 const AuthController = require('../controllers/auth.controller')
 
+//////////////////////////////////////////////////////////////////////////
+// PAGES VISITEURS
+//////////////////////////////////////////////////////////////////////////
+
 router
     .route('/')
     .get(AreaZoneController.findAllAreaZone)
+
+//////////////////////////////////////////////////////////////////////////
+// PAGES ADMINISTRATEURS
+//////////////////////////////////////////////////////////////////////////
+
+router
+    .route('/')
+    // .get(AreaZoneController.findAllAreaZone)
     .post(AuthController.protect, AuthController.restrictTo(["admin"]), AreaZoneController.createAreaZone)
 
 router

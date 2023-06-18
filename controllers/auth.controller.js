@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt")
-const { UserModel } = require('../db/sequelize');
-const { Op } = require("sequelize");
+const { UserModel } = require('../db/sequelize')
+const { Op } = require("sequelize")
 const jwt = require("jsonwebtoken")
 const privateKey = require("../authorization/privateKey")
 

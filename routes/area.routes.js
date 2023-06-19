@@ -2,10 +2,7 @@ const express = require('express');
 const router = express.Router();
 const AreaController = require('../controllers/area.controller')
 
-//////////////////////////////////////////////////////////////////////////
-// PAGES VISITEURS
-//////////////////////////////////////////////////////////////////////////
-
+/* Pages visiteurs */
 router
     .route('/')
     .get(AreaController.findAllArea)

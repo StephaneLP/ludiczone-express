@@ -6,6 +6,10 @@ const dataAreaZone = require("./data/area-zone.json")
 const dataArea = require("./data/area.json")
 const dataUser = require("./data/user.json")
 
+/*
+
+
+*/
 const initDb = () => {
     // Trois options : sync() - sync({ force: true }) - sync({ alter: true })
     sequelize.sync({ force: true })
@@ -30,7 +34,8 @@ const initDb = () => {
 //////////////////////////////////////////////////////////////////////////
 // INITIALISATION AREA TYPE
 //////////////////////////////////////////////////////////////////////////
-
+/* Initialisation du tableau contenant les promesses
+pour l'insertion des types de loisir dans la table area_type
 const setAreaType = () => {
     const tabPromesses = []
 

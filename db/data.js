@@ -7,11 +7,11 @@ const dataArea = require("./data/area.json")
 const dataUser = require("./data/user.json")
 
 /*
-
-
+Initialisation des tables :
+- import des données dans les tables par paquets (promise.all)
+- Trois options : sync() - sync({ force: true }) - sync({ alter: true })
 */
 const initDb = () => {
-    // Trois options : sync() - sync({ force: true }) - sync({ alter: true })
     sequelize.sync({ force: true })
         .then(() => {
             Promise.all(setAreaType())
@@ -31,11 +31,11 @@ const initDb = () => {
         .catch((error) => console.log(error))
 }
 
-//////////////////////////////////////////////////////////////////////////
-// INITIALISATION AREA TYPE
-//////////////////////////////////////////////////////////////////////////
-/* Initialisation du tableau contenant les promesses
-pour l'insertion des types de loisir dans la table area_type
+/*
+Initialisation du tableau contenant les promesses qui :
+- inserent les types de loisir dans la table area_type
+- à partir du fichier area-type.json
+*/
 const setAreaType = () => {
     const tabPromesses = []
 
@@ -54,10 +54,11 @@ const setAreaType = () => {
     return tabPromesses
 }
 
-//////////////////////////////////////////////////////////////////////////
-// INITIALISATION AREA ZONE
-//////////////////////////////////////////////////////////////////////////
-
+/*
+Initialisation du tableau contenant les promesses qui :
+- inserent les zones dans la table area_zone
+- à partir du fichier area-zone.json
+*/
 const setAreaZone = () => {
     const tabPromesses = []
 
@@ -76,10 +77,11 @@ const setAreaZone = () => {
     return tabPromesses
 }
 
-//////////////////////////////////////////////////////////////////////////
-// INITIALISATION AREA
-//////////////////////////////////////////////////////////////////////////
-
+/*
+Initialisation du tableau contenant les promesses qui :
+- inserent les zones dans la table area
+- à partir du fichier area.json
+*/
 const setArea = () => {
     const tabPromesses = []
 
@@ -98,10 +100,11 @@ const setArea = () => {
     return tabPromesses
 }
 
-//////////////////////////////////////////////////////////////////////////
-// INITIALISATION USER
-//////////////////////////////////////////////////////////////////////////
-
+/*
+Initialisation du tableau contenant les promesses qui :
+- inserent les zones dans la table user
+- à partir du fichier user.json
+*/
 const setUser = () => {
     const tabPromesses = []
 

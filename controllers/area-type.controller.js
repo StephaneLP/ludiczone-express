@@ -1,10 +1,11 @@
 const { AreaTypeModel } = require('../db/sequelize')
 const { Op, UniqueConstraintError, ValidationError, ForeignKeyConstraintError } = require("sequelize")
 
-//////////////////////////////////////////////////////////////////////////
-// GET
-//////////////////////////////////////////////////////////////////////////
-
+/*
+GET :
+- retourne la liste des types de loisir
+- paramètres : tri et filtre
+*/
 exports.findAllAreaType = (req, res) => {
     const search = req.query.search || ""
     const sort = req.query.sort || "asc"
@@ -15,10 +16,12 @@ exports.findAllAreaType = (req, res) => {
                 {name: {[Op.like]: `%${search}%`}}
             ]
         },
+        // attributes: ['id', 'name', 'picture'],
         order: [['name',sort]]
         })
         .then((element) => {
             const msg = "La liste des types de loisir a bien été retournée."
+            console.log(element)
             res.status(200).json({ success: true, message: msg, data: element })
         })
         .catch((error) => {
@@ -26,6 +29,11 @@ exports.findAllAreaType = (req, res) => {
         })  
 }
 
+/*
+GET :
+- retourne un type de loisir
+- paramètre : clé primaire
+*/
 exports.findAreaTypeById = (req, res) => {
     const id = req.params.id
 
@@ -45,10 +53,9 @@ exports.findAreaTypeById = (req, res) => {
         })  
 }
 
-//////////////////////////////////////////////////////////////////////////
-// CREATE
-//////////////////////////////////////////////////////////////////////////
-
+/* CREATE :
+- crée un type de loisir
+*/
 exports.createAreaType = (req, res) => {
     const newAreaType = req.body;
 

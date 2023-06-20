@@ -4,9 +4,11 @@ const { Op } = require("sequelize")
 const jwt = require("jsonwebtoken")
 const privateKey = require("../authorization/privateKey")
 
-//////////////////////////////////////////////////////////////////////////
-// LOGIN
-//////////////////////////////////////////////////////////////////////////
+/*********************************************************
+LOGIN
+- retourne un token
+- paramètres : identifiant et mot de passe
+*********************************************************/
 
 exports.login = (req, res) => {
     const username = req.body.username
@@ -38,7 +40,6 @@ exports.login = (req, res) => {
                     return res.status(401).json({ success: false, message: msg, data: {} })
                 }
 
-                // Json Web Token
                 const token = jwt.sign({
                     data: element.id,
                 }, privateKey, { expiresIn: "48h"})
@@ -54,9 +55,11 @@ exports.login = (req, res) => {
     })
 }
 
-//////////////////////////////////////////////////////////////////////////
-// GET ROLE BY TOKEN
-//////////////////////////////////////////////////////////////////////////
+/*********************************************************
+GET ROLE BY TOKEN
+- retourne le role de l'utilsateur
+- paramètre : token
+*********************************************************/
 
 exports.getRoleByToken = (req, res) => {
     const authorizationHeader = req.headers.authorization
@@ -95,9 +98,11 @@ exports.getRoleByToken = (req, res) => {
     }
 }
 
-//////////////////////////////////////////////////////////////////////////
-// PROTECT
-//////////////////////////////////////////////////////////////////////////
+/*********************************************************
+PROTECT
+- vérifie la validité du token
+- paramètre : token
+*********************************************************/
 
 exports.protect = (req, res, next) => {
     const authorizationHeader = req.headers.authorization
@@ -123,9 +128,11 @@ exports.protect = (req, res, next) => {
     return next()
 }
 
-//////////////////////////////////////////////////////////////////////////
-// RESTRICT TO
-//////////////////////////////////////////////////////////////////////////
+/*********************************************************
+RESTRICT TO
+- vérifie les droits de l'utilisateur
+- paramètre : id de l'utilisateur
+*********************************************************/
 
 exports.restrictTo = (roles) => {
     return (req, res, next) => {

@@ -1,14 +1,15 @@
 const { AreaTypeModel } = require('../db/sequelize')
 const { Op, UniqueConstraintError, ValidationError, ForeignKeyConstraintError } = require("sequelize")
 
-/*
-GET :
+/*********************************************************
+GET ALL
 - retourne la liste des types de loisir
-- paramètres : tri et filtre
-*/
+- paramètres : tri, filtre et champs
+*********************************************************/
+
 exports.findAllAreaType = (req, res) => {
-    const search = req.query.search || ""
     const sort = req.query.sort || "asc"
+    const search = req.query.search || ""
 
     AreaTypeModel.findAll({
         where: {
@@ -16,12 +17,11 @@ exports.findAllAreaType = (req, res) => {
                 {name: {[Op.like]: `%${search}%`}}
             ]
         },
-        // attributes: ['id', 'name', 'picture'],
+        attributes: ['id', 'name', 'picture'],
         order: [['name',sort]]
         })
         .then((element) => {
             const msg = "La liste des types de loisir a bien été retournée."
-            console.log(element)
             res.status(200).json({ success: true, message: msg, data: element })
         })
         .catch((error) => {
@@ -29,11 +29,12 @@ exports.findAllAreaType = (req, res) => {
         })  
 }
 
-/*
-GET :
+/*********************************************************
+GET BY ID
 - retourne un type de loisir
 - paramètre : clé primaire
-*/
+*********************************************************/
+
 exports.findAreaTypeById = (req, res) => {
     const id = req.params.id
 
@@ -41,7 +42,7 @@ exports.findAreaTypeById = (req, res) => {
         .then((element) => {
             if(element === null) {
                 const msg = "Le type de loisir n'existe pas."
-                res.status(404).json({ success: false, message: msg, data: element })                
+                res.status(404).json({ success: false, message: msg, data: {} })                
             }
             else {
                 const msg = "Le type de loisir a bien été retourné."
@@ -53,17 +54,13 @@ exports.findAreaTypeById = (req, res) => {
         })  
 }
 
-/* CREATE :
-- crée un type de loisir
-*/
-exports.createAreaType = (req, res) => {
-    const newAreaType = req.body;
+/*********************************************************
+CREATE
+- crée et retourne un type de loisir
+*********************************************************/
 
-    AreaTypeModel.create({
-        name: newAreaType.name,
-        description: newAreaType.description,
-        picture: newAreaType.picture,
-    })
+exports.createAreaType = (req, res) => {
+    AreaTypeModel.create(req.body)
     .then((element) => {
        const  msg = `Le type de loisir '${element.name}' a bien été ajouté.`
         res.status(200).json({ success: true, message: msg, data: element })
@@ -81,9 +78,11 @@ exports.createAreaType = (req, res) => {
     })
 }
 
-//////////////////////////////////////////////////////////////////////////
-// UPDATE
-//////////////////////////////////////////////////////////////////////////
+/*********************************************************
+UPDATE
+- modifie un type de loisir
+- paramètres : clé primaire et données
+*********************************************************/
 
 exports.updateAreaType = (req, res) => {
     const id = req.params.id
@@ -114,9 +113,11 @@ exports.updateAreaType = (req, res) => {
     })
 }
 
-//////////////////////////////////////////////////////////////////////////
-// DELETE
-//////////////////////////////////////////////////////////////////////////
+/*********************************************************
+DELETE
+- supprime un type de loisir
+- paramètre : clé primaire
+*********************************************************/
 
 exports.deleteAreaType = (req, res) => {
     const id = req.params.id

@@ -3,12 +3,18 @@ const router = express.Router();
 const AreaZoneController = require('../controllers/area-zone.controller')
 const AuthController = require('../controllers/auth.controller')
 
-/* Pages visiteurs */
+/*********************************************************
+Pages visiteurs
+*********************************************************/
+
 router
     .route('/')
     .get(AreaZoneController.findAllAreaZone)
 
-/* Pages administrateurs */
+/*********************************************************
+Pages administrateurs
+*********************************************************/
+ * 
 router
     .route('/admin/')
     .get(AuthController.protect, AuthController.restrictTo(["admin"]), AreaZoneController.findAllAreaZone)

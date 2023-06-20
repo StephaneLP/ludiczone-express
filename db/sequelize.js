@@ -1,6 +1,9 @@
 const { Sequelize, DataTypes } = require("sequelize")
 
-/* Connexion à la BDD */
+/*********************************************************
+Connexion à la BDD
+*********************************************************/
+
 const sequelize = new Sequelize("db_funarea", "root", "", {
     host: "localhost",
     dialect: "mariadb",
@@ -8,7 +11,10 @@ const sequelize = new Sequelize("db_funarea", "root", "", {
     timezone: "Europe/Paris",
 })
 
-/* Import des models et des relations */
+/*********************************************************
+Import des models et des relations
+*********************************************************/
+
 const AreaTypeModel = require("../models/area-type.model")(sequelize, DataTypes)
 const AreaZoneModel = require("../models/area-zone.model")(sequelize, DataTypes)
 const AreaModel = require("../models/area.model")(sequelize, DataTypes)
@@ -24,10 +30,16 @@ AreaModel.belongsTo(AreaZoneModel, {
 })
 AreaZoneModel.hasMany(AreaModel)
 
-/* Test de la connexion à la BDD */
+/*********************************************************
+Test de la connexion à la BDD
+*********************************************************/
+
 sequelize.authenticate()
     .then(() => console.log("La connexion à la BDD a bien été établie"))
     .catch(error => console.error(`Impossible de se connecter à la BDD ${error}`))
 
-/* Export de la connexion à la BDD et des models */
+/*********************************************************
+Export de la connexion à la BDD et des models
+*********************************************************/
+
 module.exports = { sequelize, AreaTypeModel, AreaZoneModel, AreaModel, UserModel }

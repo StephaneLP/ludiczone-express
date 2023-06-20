@@ -3,12 +3,18 @@ const router = express.Router();
 const AuthController = require('../controllers/auth.controller')
 const AreaTypeController = require('../controllers/area-type.controller')
 
-/* Pages visiteurs */
+/*********************************************************
+Pages visiteurs
+*********************************************************/
+
 router
     .route('/')
     .get(AreaTypeController.findAllAreaType)
 
-/* Pages administrateurs */
+/*********************************************************
+Pages administrateurs
+*********************************************************/
+
 router
     .route("/admin/")
     .get(AuthController.protect, AuthController.restrictTo(["admin"]), AreaTypeController.findAllAreaType)

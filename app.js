@@ -1,4 +1,7 @@
-/* Dépendances */
+/*********************************************************
+Dépendances
+*********************************************************/
+
 const express = require('express')
 const morgan = require('morgan')
 const serveFavicon = require('serve-favicon')
@@ -11,7 +14,10 @@ app
     .use(express.json())
     .use(cors())
 
-/* Routes */
+/*********************************************************
+Routes
+*********************************************************/
+
 const AuthRouter = require('./routes/auth.routes')
 const AreaTypeRouter = require('./routes/area-type.routes')
 const AreaZoneRouter = require('./routes/area-zone.routes')
@@ -23,12 +29,18 @@ app
     .use('/api/areazone', AreaZoneRouter)
     .use('/api/area', AreaRouter)
 
-/* Ouverture du port */
+/*********************************************************
+Ouverture du port
+*********************************************************/
+
 const port = 3001
 
 app.listen(3001, () => {console.log(`L'app sur le port ${port}`)})
 
-/* BDD : import des données */
+/*********************************************************
+BDD : import des données
+*********************************************************/
+
 const data = require('./db/data')
 
 data.initDb()

@@ -1,13 +1,17 @@
 const { AreaZoneModel } = require('../db/sequelize')
 const { Op, UniqueConstraintError, ValidationError, ForeignKeyConstraintError } = require("sequelize")
 
-//////////////////////////////////////////////////////////////////////////
-// GET
-//////////////////////////////////////////////////////////////////////////
-
+/*
+GET :
+- retourne la liste des zones
+- paramètres : tri et filtre
+*/
 exports.findAllAreaZone = (req, res) => {
     const search = req.query.search || ""
     const sort = req.query.sort || "asc"
+
+
+    
 
     AreaZoneModel.findAll({
         where: {
@@ -26,6 +30,11 @@ exports.findAllAreaZone = (req, res) => {
         })  
 }
 
+/*
+GET :
+- retourne une zone
+- paramètre : clé primaire
+*/
 exports.findAreaZoneById = (req, res) => {
     const id = req.params.id
 
@@ -45,10 +54,9 @@ exports.findAreaZoneById = (req, res) => {
         })  
 }
 
-//////////////////////////////////////////////////////////////////////////
-// CREATE
-//////////////////////////////////////////////////////////////////////////
-
+/* CREATE :
+- crée une zone
+*/
 exports.createAreaZone = (req, res) => {
     const newAreaType = req.body;
 

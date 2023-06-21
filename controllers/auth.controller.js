@@ -62,7 +62,7 @@ CHECK RÔLE
     - 401 : token non valide
     - 403 : role non valide
     - 500 : erreur serveur
-- paramètre : token
+- paramètre : token et rôle
 *********************************************************/
 
 exports.checkIsAdmin = (req, res) => {

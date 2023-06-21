@@ -57,26 +57,24 @@ exports.login = (req, res) => {
 
 /*********************************************************
 CHECK RÔLE
-- retourne le statut de la requête :
-    - 200 : succès
-    - 401 : token non valide
-    - 403 : role non valide
-    - 500 : erreur serveur
-- paramètre : token et rôle
+- vérifie si le rôle passé en paramètre correspond au rôle du user
+- retourne true / false
+- paramètres : token et rôle
 *********************************************************/
 
-exports.checkIsAdmin = (req, res) => {
+exports.checkRole = (req, res) => {
     const authorizationHeader = req.headers.authorization
+    const role = req.params.role
 
     if(!authorizationHeader) {
-        return res.status(401).end()
+        return res.json(false)
     }
     
     try {
         const token = authorizationHeader.split(' ')[1]
 
         if(token === "null") {
-            return res.status(401).end()
+            return res.json(false)
         }
 
         const decoded = jwt.verify(token, privateKey) // Vérification du token
@@ -85,36 +83,38 @@ exports.checkIsAdmin = (req, res) => {
         UserModel.findByPk(id) // Vérification du role du user
             .then(user => {
                 if(!user) {
-                    return res.status(403).end()
+                    return res.json(false)
                 }
 
-                if(user.role !== "admin") {
-                    return res.status(403).end()
+                if(user.role !== role) {
+                    return res.json(false)
                 }
 
-                return res.status(200).end()
+                return res.json(true)
             })
             .catch(() => {
-                return res.status(500).end()
+                return res.json(false)
             }) 
     }
     catch(error) {
-        return res.status(401).end()
+        return res.json(false)
     }
 }
 
 /*********************************************************
-CHECK IS USER
+CHECK RÔLE
+- vérifie si le rôle passé en paramètre correspond au rôle du user
 - retourne le statut de la requête :
     - 200 : succès
     - 401 : token non valide
     - 403 : role non valide
     - 500 : erreur serveur
-- paramètre : token
+- paramètres : token et rôle
 *********************************************************/
 
-exports.checkIsUser = (req, res) => {
+exports.checkRoleReturnStatus = (req, res) => {
     const authorizationHeader = req.headers.authorization
+    const role = req.params.role
 
     if(!authorizationHeader) {
         return res.status(401).end()
@@ -136,7 +136,7 @@ exports.checkIsUser = (req, res) => {
                     return res.status(403).end()
                 }
 
-                if(user.role !== "user") {
+                if(user.role !== role) {
                     return res.status(403).end()
                 }
 
@@ -150,50 +150,6 @@ exports.checkIsUser = (req, res) => {
         return res.status(401).end()
     }
 }
-
-// exports.checkIsAdmin = (req, res) => {
-//     const authorizationHeader = req.headers.authorization
-
-//     if(!authorizationHeader) {
-//         const msg = "Un jeton est nécessaire pour acceder au role du user."
-//         return res.status(401).json({ success: false, message: msg, data: {} })
-//     }
-
-//     try {
-//         const token = authorizationHeader.split(' ')[1]
-
-//         if(token === "null") {
-//             const msg = "Un jeton est nécessaire pour acceder au role du user."
-//             return res.status(401).json({ success: false, message: msg, data: {} })
-//         }
-
-//         const decoded = jwt.verify(token, privateKey) // Vérification du token
-//         const id = decoded.data // Décryptage de l'id user
-
-//         UserModel.findByPk(id)
-//             .then(user => {
-//                 if(!user) {
-//                     const msg = "Le user n'a pas les droits requis."
-//                     return res.status(403).json({ success: false, message: msg, data: {} })
-//                 }
-
-//                 if(user.role !== "admin") {
-//                     const msg = "Le user n'a pas les droits requis."
-//                     return res.status(403).json({ success: false, message: msg, data: {} })
-//                 }
-
-//                 const msg = `Le user a les droits requis.`
-//                 return res.status(200).json({ success: true, message: msg, data: {} })
-//             })
-//             .catch(error => {
-//                 return res.status(500).json({ success: false, message: error.message, data: error })
-//             }) 
-//     }
-//     catch(error) {
-//         const msg = "Une erreur est survenue dans le processus d'autentification : le jeton n'est pas valide."
-//         return res.status(401).json({ success: false, message: msg, data: error })
-//     }
-// }
 
 /*********************************************************
 PROTECT

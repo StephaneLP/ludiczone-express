@@ -7,7 +7,7 @@ router
     .post(AuthController.login)
 
 router
-    .route('/checkisadmin')
-    .get(AuthController.checkIsAdmin)
+    .route('/checkrole/:role')
+    .get(AuthController.checkRole)
 
 module.exports = router;

@@ -56,49 +56,144 @@ exports.login = (req, res) => {
 }
 
 /*********************************************************
-GET ROLE BY TOKEN
-- retourne le role de l'utilsateur
+CHECK RÔLE
+- retourne le statut de la requête :
+    - 200 : succès
+    - 401 : token non valide
+    - 403 : role non valide
+    - 500 : erreur serveur
 - paramètre : token
 *********************************************************/
 
-exports.getRoleByToken = (req, res) => {
+exports.checkIsAdmin = (req, res) => {
     const authorizationHeader = req.headers.authorization
 
     if(!authorizationHeader) {
-        const msg = "Un jeton est nécessaire pour acceder au role du user."
-        return res.status(401).json({ success: false, message: msg, data: "" })
+        return res.status(401).end()
     }
     
     try {
         const token = authorizationHeader.split(' ')[1]
 
         if(token === "null") {
-            const msg = "Un jeton est nécessaire pour acceder au role du user."
-            return res.status(401).json({ success: false, message: msg, data: "" })
+            return res.status(401).end()
         }
 
         const decoded = jwt.verify(token, privateKey) // Vérification du token
         const id = decoded.data // Décryptage de l'id user
 
-        UserModel.findByPk(id)
+        UserModel.findByPk(id) // Vérification du role du user
             .then(user => {
                 if(!user) {
-                    const msg = "Le user n'a pas les droits requis."
-                    return res.status(403).json({ success: false, message: msg, data: "" })
+                    return res.status(403).end()
                 }
 
-                const msg = `Le role a bien été retourné pour l'id : ${id}.`
-                return res.status(200).json({ success: true, message: msg, data: user.role })
+                if(user.role !== "admin") {
+                    return res.status(403).end()
+                }
+
+                return res.status(200).end()
             })
-            .catch(error => {
-                return res.status(500).json({ success: false, message: error.message, data: error })
+            .catch(() => {
+                return res.status(500).end()
             }) 
     }
     catch(error) {
-        const msg = "Une erreur est survenue dans le processus d'autentification : le jeton n'est pas valide."
-        return res.status(401).json({ success: false, message: msg, data: error })
+        return res.status(401).end()
     }
 }
+
+/*********************************************************
+CHECK IS USER
+- retourne le statut de la requête :
+    - 200 : succès
+    - 401 : token non valide
+    - 403 : role non valide
+    - 500 : erreur serveur
+- paramètre : token
+*********************************************************/
+
+exports.checkIsUser = (req, res) => {
+    const authorizationHeader = req.headers.authorization
+
+    if(!authorizationHeader) {
+        return res.status(401).end()
+    }
+    
+    try {
+        const token = authorizationHeader.split(' ')[1]
+
+        if(token === "null") {
+            return res.status(401).end()
+        }
+
+        const decoded = jwt.verify(token, privateKey) // Vérification du token
+        const id = decoded.data // Décryptage de l'id user
+
+        UserModel.findByPk(id) // Vérification du role du user
+            .then(user => {
+                if(!user) {
+                    return res.status(403).end()
+                }
+
+                if(user.role !== "user") {
+                    return res.status(403).end()
+                }
+
+                return res.status(200).end()
+            })
+            .catch(() => {
+                return res.status(500).end()
+            }) 
+    }
+    catch(error) {
+        return res.status(401).end()
+    }
+}
+
+// exports.checkIsAdmin = (req, res) => {
+//     const authorizationHeader = req.headers.authorization
+
+//     if(!authorizationHeader) {
+//         const msg = "Un jeton est nécessaire pour acceder au role du user."
+//         return res.status(401).json({ success: false, message: msg, data: {} })
+//     }
+
+//     try {
+//         const token = authorizationHeader.split(' ')[1]
+
+//         if(token === "null") {
+//             const msg = "Un jeton est nécessaire pour acceder au role du user."
+//             return res.status(401).json({ success: false, message: msg, data: {} })
+//         }
+
+//         const decoded = jwt.verify(token, privateKey) // Vérification du token
+//         const id = decoded.data // Décryptage de l'id user
+
+//         UserModel.findByPk(id)
+//             .then(user => {
+//                 if(!user) {
+//                     const msg = "Le user n'a pas les droits requis."
+//                     return res.status(403).json({ success: false, message: msg, data: {} })
+//                 }
+
+//                 if(user.role !== "admin") {
+//                     const msg = "Le user n'a pas les droits requis."
+//                     return res.status(403).json({ success: false, message: msg, data: {} })
+//                 }
+
+//                 const msg = `Le user a les droits requis.`
+//                 return res.status(200).json({ success: true, message: msg, data: {} })
+//             })
+//             .catch(error => {
+//                 return res.status(500).json({ success: false, message: error.message, data: error })
+//             }) 
+//     }
+//     catch(error) {
+//         const msg = "Une erreur est survenue dans le processus d'autentification : le jeton n'est pas valide."
+//         return res.status(401).json({ success: false, message: msg, data: error })
+//     }
+// }
 
 /*********************************************************
 PROTECT

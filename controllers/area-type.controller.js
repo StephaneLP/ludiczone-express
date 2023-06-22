@@ -2,6 +2,27 @@ const { AreaTypeModel } = require('../db/sequelize')
 const { Op, UniqueConstraintError, ValidationError, ForeignKeyConstraintError } = require("sequelize")
 
 /*********************************************************
+GET FOR HOME PAGE
+- retourne la liste des types de loisir
+- champs : "id", "name", "picture"
+- paramètres : sans
+*********************************************************/
+
+exports.findAreaTypeForHomePage = (req, res) => {
+    AreaTypeModel.findAll({
+        attributes: ["id", "name", "picture"],
+        order: [["name","asc"]]
+        })
+        .then((element) => {
+            const msg = "La liste des types de loisir a bien été retournée."
+            return res.status(200).json({ success: true, message: msg, data: element })
+        })
+        .catch((error) => {
+            return res.status(500).json({ success: false, message: error.message, data: error })
+        })  
+}
+
+/*********************************************************
 GET ALL
 - retourne la liste des types de loisir
 - paramètres : tri et filtre
@@ -9,7 +30,9 @@ GET ALL
 
 exports.findAllAreaType = (req, res) => {
     const sort = req.query.sort || "asc"
-    const search = req.query.search || ""
+    const objFilter = {
+        name: req.query.search || ""
+    }
 
     // Filtres (si clause = {} : aucune clause where n'est appliquée)
     let clauseWhere = {}
@@ -30,25 +53,8 @@ exports.findAllAreaType = (req, res) => {
         })  
 }
 
-/*********************************************************
-GET FOR HOME PAGE
-- retourne la liste des types de loisir
-- champs : "id", "name", "picture"
-- paramètres : sans
-*********************************************************/
+const setTabFilter = (objFilter) => {
 
-exports.findAreaTypeForHomePage = (req, res) => {
-    AreaTypeModel.findAll({
-        attributes: ["id", "name", "picture"],
-        order: [["name","asc"]]
-        })
-        .then((element) => {
-            const msg = "La liste des types de loisir a bien été retournée."
-            return res.status(200).json({ success: true, message: msg, data: element })
-        })
-        .catch((error) => {
-            return res.status(500).json({ success: false, message: error.message, data: error })
-        })  
 }
 
 /*********************************************************
@@ -104,12 +110,12 @@ UPDATE
 
 exports.updateAreaType = (req, res) => {
     const id = req.params.id
-console.log("update",req.body)
+
     AreaTypeModel.update(req.body,{
         where: {id: id}
     })
     .then((element) => {
-        if(element[0] === 0) {
+        if(element[0] === 0) { // element[0] indique le nombre d'éléments modifiés
             const msg = `Modification impossible : aucun élément ne correspond à l'id : ${id}.`
             return res.status(404).json({ success: false, message: msg, data: {} })
         }
@@ -139,8 +145,7 @@ exports.deleteAreaType = (req, res) => {
         where: {id: id}
     })
     .then((element) => {
-        console.log(element)
-        if(element === 0) {
+        if(element === 0) { // element indique le nombre d'éléments supprimés
             const msg = `Suppression impossible : aucun élément ne correspond à l'id : ${id}.`
             return res.status(404).json({ success: false, message: msg, data: {} })
         }

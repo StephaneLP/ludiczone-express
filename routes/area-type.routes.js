@@ -4,7 +4,7 @@ const AuthController = require('../controllers/auth.controller')
 const AreaTypeController = require('../controllers/area-type.controller')
 
 /*********************************************************
-Pages visiteurs
+Pages visiteurs : Home Page
 *********************************************************/
 
 router

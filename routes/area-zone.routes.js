@@ -4,12 +4,12 @@ const AreaZoneController = require('../controllers/area-zone.controller')
 const AuthController = require('../controllers/auth.controller')
 
 /*********************************************************
-Pages visiteurs
+Pages visiteurs : Home Page
 *********************************************************/
 
 router
     .route('/')
-    .get(AreaZoneController.findAllAreaZone)
+    .get(AreaZoneController.findAreaZoneForHomePage)
 
 /*********************************************************
 Pages administrateurs

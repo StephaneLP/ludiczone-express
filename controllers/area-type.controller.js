@@ -34,14 +34,14 @@ exports.findAllAreaType = (req, res) => {
         name: req.query.search || ""
     }
 
-    // Filtres (si clause = {} : aucune clause where n'est appliquée)
+    
     let clauseWhere = {}
     const tabWhere = []
     if(search !== "") {tabWhere.push({name: {[Op.like]: `%${search}%`}})}
     if(tabWhere.length !== 0) {clauseWhere = {[Op.and]: tabWhere}}
 
     AreaTypeModel.findAll({
-        where: clauseWhere,
+        where: clauseWhere, // si clauseWhere = {} alors aucune clause ne sera appliquée
         order: [["name",sort]]
         })
         .then((element) => {

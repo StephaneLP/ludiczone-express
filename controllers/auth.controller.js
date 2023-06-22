@@ -56,53 +56,52 @@ exports.login = (req, res) => {
 }
 
 /*********************************************************
-CHECK RÔLE
-- vérifie si le rôle passé en paramètre correspond au rôle du user
-- retourne true / false
-- paramètres : token et rôle
+CHECK RÔLE (BOOLEANS)
+- retourne l'objet roles contenant un booléen pour chaque rôle
+- paramètre : token
 *********************************************************/
 
-exports.checkRole = (req, res) => {
+exports.checkRoleReturnBooleans = (req, res) => {
     const authorizationHeader = req.headers.authorization
-    const role = req.params.role
+    const resRoles = {utilisateur: false, administrateur: false}
 
     if(!authorizationHeader) {
-        return res.json(false)
+        return res.json({roles: resRoles})
     }
     
     try {
         const token = authorizationHeader.split(' ')[1]
 
         if(token === "null") {
-            return res.json(false)
+            return res.json({roles: resRoles})
         }
 
         const decoded = jwt.verify(token, privateKey) // Vérification du token
         const id = decoded.data // Décryptage de l'id user
 
         UserModel.findByPk(id) // Vérification du role du user
-            .then(user => {
-                if(!user) {
-                    return res.json(false)
+            .then((user) => {
+                if(user) {
+                    if(user.role === "user") {
+                        resRoles.utilisateur = true
+                    }
+                    if(user.role === "admin") {
+                        resRoles.administrateur = true
+                    }
                 }
-
-                if(user.role !== role) {
-                    return res.json(false)
-                }
-
-                return res.json(true)
+                return res.json({roles: resRoles})
             })
             .catch(() => {
-                return res.json(false)
+                return res.json({roles: resRoles})
             }) 
     }
     catch(error) {
-        return res.json(false)
+        return res.json({roles: resRoles})
     }
 }
 
 /*********************************************************
-CHECK RÔLE
+CHECK RÔLE (STATUS)
 - vérifie si le rôle passé en paramètre correspond au rôle du user
 - retourne le statut de la requête :
     - 200 : succès
@@ -135,11 +134,9 @@ exports.checkRoleReturnStatus = (req, res) => {
                 if(!user) {
                     return res.status(403).end()
                 }
-
                 if(user.role !== role) {
                     return res.status(403).end()
                 }
-
                 return res.status(200).end()
             })
             .catch(() => {

@@ -14,7 +14,7 @@ router
 /*********************************************************
 Pages administrateurs
 *********************************************************/
- * 
+
 router
     .route('/admin/')
     .get(AuthController.protect, AuthController.restrictTo(["admin"]), AreaZoneController.findAllAreaZone)

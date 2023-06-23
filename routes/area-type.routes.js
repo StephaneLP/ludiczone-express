@@ -6,7 +6,6 @@ const AreaTypeController = require('../controllers/area-type.controller')
 /*********************************************************
 Pages visiteurs : Home Page
 *********************************************************/
-
 router
     .route('/')
     .get(AreaTypeController.findAreaTypeForHomePage)
@@ -14,7 +13,6 @@ router
 /*********************************************************
 Pages administrateurs
 *********************************************************/
-
 router
     .route("/admin/")
     .get(AuthController.protect, AuthController.restrictTo(["admin"]), AreaTypeController.findAllAreaType)

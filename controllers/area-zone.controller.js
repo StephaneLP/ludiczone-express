@@ -7,7 +7,6 @@ GET FOR HOME PAGE
 - champs : "id", "name", "picture"
 - paramètres : sans
 *********************************************************/
-
 exports.findAreaZoneForHomePage = (req, res) => {
     AreaZoneModel.findAll({
         attributes: ["id", "name", "picture"],
@@ -27,19 +26,15 @@ GET ALL
 - retourne la liste des zones
 - paramètres : tri et filtre
 *********************************************************/
-
 exports.findAllAreaZone = (req, res) => {
     const sort = req.query.sort || "asc"
-    const search = req.query.search || ""
+    const name = req.query.name || ""
 
-    // Filtres (si clause = {} : aucune clause where n'est appliquée)
-    let clauseWhere = {}
-    const tabWhere = []
-    if(search !== "") {tabWhere.push({name: {[Op.like]: `%${search}%`}})}
-    if(tabWhere.length !== 0) {clauseWhere = {[Op.and]: tabWhere}}
+    const clauseWhere = []
+    if(name !== "") {clauseWhere.push({name: {[Op.like]: `%${objFilter.name}%`}})}
 
     AreaZoneModel.findAll({
-        where: clauseWhere,
+        where: {[Op.and]: clauseWhere}, // si clauseWhere = [], aucune clause n'est appliquée
         order: [["name",sort]]
         })
         .then((element) => {
@@ -56,7 +51,6 @@ GET BY ID
 - retourne une zone
 - paramètre : clé primaire
 *********************************************************/
-
 exports.findAreaZoneById = (req, res) => {
     const id = req.params.id
 
@@ -79,7 +73,6 @@ exports.findAreaZoneById = (req, res) => {
 CREATE
 - crée et retourne une zone
 *********************************************************/
-
 exports.createAreaZone = (req, res) => {
     AreaZoneModel.create(req.body)
     .then((element) => {
@@ -101,7 +94,6 @@ UPDATE
 - modifie une zone
 - paramètres : clé primaire et données
 *********************************************************/
-
 exports.updateAreaZone = (req, res) => {
     const id = req.params.id
 
@@ -131,7 +123,6 @@ DELETE
 - supprime une zone
 - paramètre : clé primaire
 *********************************************************/
-
 exports.deleteAreaZone = (req, res) => {
     const id = req.params.id
 

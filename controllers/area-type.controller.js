@@ -7,7 +7,6 @@ GET FOR HOME PAGE
 - champs : "id", "name", "picture"
 - paramètres : sans
 *********************************************************/
-
 exports.findAreaTypeForHomePage = (req, res) => {
     AreaTypeModel.findAll({
         attributes: ["id", "name", "picture"],
@@ -27,21 +26,15 @@ GET ALL
 - retourne la liste des types de loisir
 - paramètres : tri et filtre
 *********************************************************/
-
 exports.findAllAreaType = (req, res) => {
     const sort = req.query.sort || "asc"
-    const objFilter = {
-        name: req.query.search || ""
-    }
+    const name = req.query.name || ""
 
-    
-    let clauseWhere = {}
-    const tabWhere = []
-    if(search !== "") {tabWhere.push({name: {[Op.like]: `%${search}%`}})}
-    if(tabWhere.length !== 0) {clauseWhere = {[Op.and]: tabWhere}}
+    const clauseWhere = []
+    if(name !== "") {clauseWhere.push({name: {[Op.like]: `%${objFilter.name}%`}})}
 
     AreaTypeModel.findAll({
-        where: clauseWhere, // si clauseWhere = {} alors aucune clause ne sera appliquée
+        where: {[Op.and]: clauseWhere}, // si clauseWhere = [], aucune clause n'est appliquée
         order: [["name",sort]]
         })
         .then((element) => {
@@ -53,16 +46,11 @@ exports.findAllAreaType = (req, res) => {
         })  
 }
 
-const setTabFilter = (objFilter) => {
-
-}
-
 /*********************************************************
 GET BY ID
 - retourne un type de loisir
 - paramètre : clé primaire
 *********************************************************/
-
 exports.findAreaTypeById = (req, res) => {
     const id = req.params.id
 
@@ -85,7 +73,6 @@ exports.findAreaTypeById = (req, res) => {
 CREATE
 - crée et retourne un type de loisir
 *********************************************************/
-
 exports.createAreaType = (req, res) => {
     AreaTypeModel.create(req.body)
     .then((element) => {
@@ -107,7 +94,6 @@ UPDATE
 - modifie un type de loisir
 - paramètres : clé primaire et données
 *********************************************************/
-
 exports.updateAreaType = (req, res) => {
     const id = req.params.id
 
@@ -137,7 +123,6 @@ DELETE
 - supprime un type de loisir
 - paramètre : clé primaire
 *********************************************************/
-
 exports.deleteAreaType = (req, res) => {
     const id = req.params.id
 

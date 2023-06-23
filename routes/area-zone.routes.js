@@ -6,7 +6,6 @@ const AuthController = require('../controllers/auth.controller')
 /*********************************************************
 Pages visiteurs : Home Page
 *********************************************************/
-
 router
     .route('/')
     .get(AreaZoneController.findAreaZoneForHomePage)
@@ -14,7 +13,6 @@ router
 /*********************************************************
 Pages administrateurs
 *********************************************************/
-
 router
     .route('/admin/')
     .get(AuthController.protect, AuthController.restrictTo(["admin"]), AreaZoneController.findAllAreaZone)

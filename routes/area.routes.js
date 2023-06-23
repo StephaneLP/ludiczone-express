@@ -5,7 +5,6 @@ const AreaController = require('../controllers/area.controller')
 /*********************************************************
 Pages visiteurs
 *********************************************************/
-
 router
     .route('/')
     .get(AreaController.findAllArea)

@@ -1,7 +1,6 @@
 /*********************************************************
 Dépendances
 *********************************************************/
-
 const express = require('express')
 const morgan = require('morgan')
 const serveFavicon = require('serve-favicon')
@@ -17,7 +16,6 @@ app
 /*********************************************************
 Routes
 *********************************************************/
-
 const AuthRouter = require('./routes/auth.routes')
 const AreaTypeRouter = require('./routes/area-type.routes')
 const AreaZoneRouter = require('./routes/area-zone.routes')
@@ -32,7 +30,6 @@ app
 /*********************************************************
 Ouverture du port
 *********************************************************/
-
 const port = 3001
 
 app.listen(3001, () => {console.log(`L'app sur le port ${port}`)})
@@ -40,7 +37,6 @@ app.listen(3001, () => {console.log(`L'app sur le port ${port}`)})
 /*********************************************************
 BDD : import des données
 *********************************************************/
-
 const data = require('./db/data')
 
 data.initDb()

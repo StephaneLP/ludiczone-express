@@ -11,7 +11,6 @@ Initialisation des tables :
 - import des données dans les tables par paquets (promise.all)
 - Trois options : sync() - sync({ force: true }) - sync({ alter: true })
 *********************************************************/
-
 const initDb = () => {
     sequelize.sync({ force: true })
         .then(() => {
@@ -37,7 +36,6 @@ Initialisation du tableau contenant les promesses qui :
 - inserent les types de loisir dans la table area_type
 - à partir du fichier area-type.json
 *********************************************************/
-
 const setAreaType = () => {
     const tabPromesses = []
 
@@ -52,7 +50,6 @@ const setAreaType = () => {
         })
         tabPromesses.push(creer)
     })
-
     return tabPromesses
 }
 
@@ -61,7 +58,6 @@ Initialisation du tableau contenant les promesses qui :
 - inserent les zones dans la table area_zone
 - à partir du fichier area-zone.json
 *********************************************************/
-
 const setAreaZone = () => {
     const tabPromesses = []
 
@@ -76,7 +72,6 @@ const setAreaZone = () => {
         })
         tabPromesses.push(creer)
     })
-
     return tabPromesses
 }
 
@@ -85,7 +80,6 @@ Initialisation du tableau contenant les promesses qui :
 - inserent les zones dans la table area
 - à partir du fichier area.json
 *********************************************************/
-
 const setArea = () => {
     const tabPromesses = []
 
@@ -100,7 +94,6 @@ const setArea = () => {
         })
         tabPromesses.push(creer)
     })
-
     return tabPromesses
 }
 
@@ -109,7 +102,6 @@ Initialisation du tableau contenant les promesses qui :
 - inserent les zones dans la table user
 - à partir du fichier user.json
 *********************************************************/
-
 const setUser = () => {
     const tabPromesses = []
 
@@ -130,7 +122,6 @@ const setUser = () => {
             })
         tabPromesses.push(creer)
     })
-    
     return tabPromesses
 }
 

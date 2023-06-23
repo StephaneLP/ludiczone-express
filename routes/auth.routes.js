@@ -5,7 +5,6 @@ const AuthController = require('../controllers/auth.controller')
 /*********************************************************
 Composant Connexion
 *********************************************************/
-
 router
     .route('/login')
     .post(AuthController.login)
@@ -13,7 +12,6 @@ router
 /*********************************************************
 Composant Menu
 *********************************************************/
-
 router
     .route('/checkrole')
     .get(AuthController.checkRoleReturnBooleans)
@@ -21,7 +19,6 @@ router
 /*********************************************************
 Pages d'administration
 *********************************************************/
-
 router
     .route('/checkrole/:role')
     .get(AuthController.checkRoleReturnStatus)

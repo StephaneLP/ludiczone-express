@@ -9,7 +9,6 @@ LOGIN
 - retourne un token
 - paramètres : identifiant et mot de passe
 *********************************************************/
-
 exports.login = (req, res) => {
     const username = req.body.username
     const password = req.body.password
@@ -60,7 +59,6 @@ CHECK RÔLE (BOOLEANS)
 - retourne l'objet roles contenant un booléen pour chaque rôle
 - paramètre : token
 *********************************************************/
-
 exports.checkRoleReturnBooleans = (req, res) => {
     const authorizationHeader = req.headers.authorization
     const resRoles = {utilisateur: false, administrateur: false}
@@ -110,7 +108,6 @@ CHECK RÔLE (STATUS)
     - 500 : erreur serveur
 - paramètres : token et rôle
 *********************************************************/
-
 exports.checkRoleReturnStatus = (req, res) => {
     const authorizationHeader = req.headers.authorization
     const role = req.params.role
@@ -153,7 +150,6 @@ PROTECT
 - vérifie la validité du token
 - paramètre : token
 *********************************************************/
-
 exports.protect = (req, res, next) => {
     const authorizationHeader = req.headers.authorization
 
@@ -186,7 +182,6 @@ RESTRICT TO
 - vérifie les droits de l'utilisateur
 - paramètre : id de l'utilisateur
 *********************************************************/
-
 exports.restrictTo = (roles) => {
     return (req, res, next) => {
         UserModel.findByPk(req.userId)

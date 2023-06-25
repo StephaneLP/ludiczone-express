@@ -24,6 +24,7 @@ exports.findAreaZoneForHomePage = (req, res) => {
 /*********************************************************
 GET ALL
 - retourne la liste des zones
+- champs : tous
 - paramètres : tri et filtre
 *********************************************************/
 exports.findAllAreaZone = (req, res) => {

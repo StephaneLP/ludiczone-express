@@ -24,6 +24,7 @@ exports.findAreaTypeForHomePage = (req, res) => {
 /*********************************************************
 GET ALL
 - retourne la liste des types de loisir
+- champs : tous
 - paramètres : tri et filtre
 *********************************************************/
 exports.findAllAreaType = (req, res) => {

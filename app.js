@@ -32,7 +32,7 @@ Ouverture du port
 *********************************************************/
 const port = 3001
 
-app.listen(3001, () => {console.log(`L'app sur le port ${port}`)})
+app.listen(port, () => {console.log(`L'app sur le port ${port}`)})
 
 /*********************************************************
 BDD : import des données

@@ -113,14 +113,14 @@ exports.checkRoleReturnStatus = (req, res) => {
     const role = req.params.role
 
     if(!authorizationHeader) {
-        return res.status(401).end()
+        return res.status(400).end()
     }
     
     try {
         const token = authorizationHeader.split(' ')[1]
 
         if(token === "null") {
-            return res.status(401).end()
+            return res.status(400).end()
         }
 
         const decoded = jwt.verify(token, privateKey) // Vérification du token
@@ -155,7 +155,7 @@ exports.protect = (req, res, next) => {
 
     if(!authorizationHeader) {
         const msg = "Un jeton est nécessaire pour acceder à la ressource."
-        return res.status(401).json({ success: false, message: msg, data: {} })
+        return res.status(400).json({ success: false, message: msg, data: {} })
     }
 
     try {
@@ -163,7 +163,7 @@ exports.protect = (req, res, next) => {
 
         if(token === "null") {
             const msg = "Un jeton est nécessaire pour acceder à la ressource."
-            return res.status(401).json({ success: false, message: msg, data: {} })
+            return res.status(400).json({ success: false, message: msg, data: {} })
         }
 
         const decoded = jwt.verify(token, privateKey) // Vérification du token

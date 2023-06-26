@@ -32,7 +32,7 @@ exports.findAllAreaType = (req, res) => {
     const name = req.query.name || ""
 
     const clauseWhere = []
-    if(name !== "") {clauseWhere.push({name: {[Op.like]: `%${objFilter.name}%`}})}
+    if(name !== "") {clauseWhere.push({name: {[Op.like]: `%${name}%`}})}
 
     AreaTypeModel.findAll({
         where: {[Op.and]: clauseWhere}, // si clauseWhere = [], aucune clause n'est appliquée

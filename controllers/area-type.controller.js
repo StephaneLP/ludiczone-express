@@ -14,10 +14,10 @@ exports.findAreaTypeForHomePage = (req, res) => {
         })
         .then((element) => {
             const msg = "La liste des types de loisir a bien été retournée."
-            return res.status(200).json({ success: true, message: msg, data: element })
+            return res.status(200).json({ status: "SUCCESS", message: msg, data: element })
         })
         .catch((error) => {
-            return res.status(500).json({ success: false, message: error.message })
+            return res.status(500).json({ status: "ERROR_SERVER", message: error.message })
         })  
 }
 
@@ -40,10 +40,10 @@ exports.findAllAreaType = (req, res) => {
         })
         .then((element) => {
             const msg = "La liste des types de loisir a bien été retournée."
-            return res.status(200).json({ success: true, message: msg, data: element })
+            return res.status(200).json({ status: "SUCCESS", message: msg, data: element })
         })
         .catch((error) => {
-            return res.status(500).json({ success: false, message: error.message })
+            return res.status(500).json({ status: "ERROR_SERVER", message: error.message })
         })  
 }
 
@@ -63,10 +63,10 @@ exports.findAreaTypeById = (req, res) => {
             }
             
             const msg = "Le type de loisir a bien été retourné."
-            return res.status(200).json({ success: true, message: msg, data: element })
+            return res.status(200).json({ status: "SUCCESS", message: msg, data: element })
         })
         .catch((error) => {
-            return res.status(500).json({ success: false, message: error.message })
+            return res.status(500).json({ status: "ERROR_SERVER", message: error.message })
         })  
 }
 
@@ -78,14 +78,14 @@ exports.createAreaType = (req, res) => {
     AreaTypeModel.create(req.body)
     .then((element) => {
         const  msg = `Le type de loisir '${element.name}' a bien été ajouté.`
-        return res.status(200).json({ success: true, message: msg })
+        return res.status(200).json({ status: "SUCCESS", message: msg })
     })
     .catch(error => {
         if(error instanceof UniqueConstraintError || error instanceof ValidationError){
             return res.status(409).json({ success: false, message: error.message })    
         }        
         else {
-            return res.status(500).json({ success: false, message: error.message })    
+            return res.status(500).json({ status: "ERROR_SERVER", message: error.message })    
         }
     })
 }
@@ -108,14 +108,14 @@ exports.updateAreaType = (req, res) => {
         }
 
         const msg = `Le type de loisir '${req.body.name}' a bien été modifié.`
-        return res.status(200).json({ success: true, message: msg })
+        return res.status(200).json({ status: "SUCCESS", message: msg })
     })
     .catch(error => {
         if(error instanceof UniqueConstraintError || error instanceof ValidationError){
             return res.status(409).json({ success: false, message: error.message })    
         }
 
-        return res.status(500).json({ success: false, message: error.message })    
+        return res.status(500).json({ status: "ERROR_SERVER", message: error.message })    
     })
 }
 
@@ -137,7 +137,7 @@ exports.deleteAreaType = (req, res) => {
         }
 
         const msg = `L'élément id ${id} a bien été supprimé.`
-        return res.status(200).json({ success: true, message: msg })
+        return res.status(200).json({ status: "SUCCESS", message: msg })
     })
     .catch((error) => {
         if(error instanceof ForeignKeyConstraintError){
@@ -145,6 +145,6 @@ exports.deleteAreaType = (req, res) => {
             return res.status(409).json({ success: false, message: msg })
         }
 
-        return res.status(500).json({ success: false, message: error.message })            
+        return res.status(500).json({ status: "ERROR_SERVER", message: error.message })            
     })
 }

@@ -15,7 +15,7 @@ exports.login = (req, res) => {
 
     if(!username || !password) {
         const msg = "Veuillez renseigner un identifiant et un mot de passe."
-        return res.status(400).json({ success: false, message: msg, data: {} })
+        return res.status(400).json({ success: false, message: msg })
     }
 
     UserModel.findOne({
@@ -29,14 +29,14 @@ exports.login = (req, res) => {
     .then((element) => {
         if(!element) {
             const msg = "L'identifiant ou le mot de passe est incorrect. Veuillez essayer à nouveau."
-            return res.status(401).json({ success: false, message: msg, data: {} })
+            return res.status(401).send({ message: msg })
         }
 
         bcrypt.compare(password,element.password) // Vérification du mot de passe
             .then(isValid => {
                 if(!isValid) {
                     const msg = "L'identifiant ou le mot de passe est incorrect. Veuillez essayer à nouveau."
-                    return res.status(401).json({ success: false, message: msg, data: {} })
+                    return res.status(401).json({ success: false, message: msg })
                 }
 
                 const token = jwt.sign({ // Génération du token avec encryptage de l'id user
@@ -44,13 +44,11 @@ exports.login = (req, res) => {
                 }, privateKey, { expiresIn: "48h"})
                 
                 const msg = "L'utilisateur a été connecté avec succès."
-                element.password = "Hidden"
-                return res.status(200).json({ success: true, message: msg, data: element, token: token })
+                return res.status(200).json({ success: true, message: msg, data: {jeton: token, identifiant: element.nick_name }})
             })
     })
     .catch((error) => {
-        const msg = "Une erreur est survenue dans le processus de connexion."
-        return res.status(500).json({ success: false, message: msg, data: error })
+        return res.status(500).json({ success: false, message: error.message })
     })
 }
 
@@ -155,7 +153,7 @@ exports.protect = (req, res, next) => {
 
     if(!authorizationHeader) {
         const msg = "Un jeton est nécessaire pour acceder à la ressource."
-        return res.status(400).json({ success: false, message: msg, data: {} })
+        return res.status(400).json({ success: false, message: msg })
     }
 
     try {
@@ -163,15 +161,14 @@ exports.protect = (req, res, next) => {
 
         if(token === "null") {
             const msg = "Un jeton est nécessaire pour acceder à la ressource."
-            return res.status(400).json({ success: false, message: msg, data: {} })
+            return res.status(400).json({ success: false, message: msg })
         }
 
         const decoded = jwt.verify(token, privateKey) // Vérification du token
         req.userId = decoded.data // Décryptage de l'id user
     }
     catch(error) {
-        const  msg = "Le jeton n'est pas valide."
-        return res.status(401).json({ success: false, message: msg, data: error })
+        return res.status(401).json({ success: false, message: error.message })
     }
 
     return next()
@@ -188,13 +185,13 @@ exports.restrictTo = (roles) => {
             .then(user => {
                 if(!user || !roles.includes(user.role)) { // La liste des rôles autorisés contient-elle le rôle du user ?
                     const msg = "Vos droits sont insuffisants."
-                    return res.status(403).json({ success: false, message: msg, data: {} })
+                    return res.status(403).json({ success: false, message: msg })
                 }
 
                 return next()
             })
             .catch(error => {
-                return res.status(500).json({ success: false, message: error.message, data: error })
+                return res.status(500).json({ success: false, message: error.message })
             })
     }
 }

@@ -15,7 +15,7 @@ exports.login = (req, res) => {
 
     if(!username || !password) {
         const msg = "Veuillez renseigner un identifiant et un mot de passe."
-        return res.status(400).json({ success: false, message: msg })
+        return res.status(400).json({ status: "ERR_REQUEST", message: msg })
     }
 
     UserModel.findOne({
@@ -29,14 +29,14 @@ exports.login = (req, res) => {
     .then((element) => {
         if(!element) {
             const msg = "L'identifiant ou le mot de passe est incorrect. Veuillez essayer à nouveau."
-            return res.status(401).send({ message: msg })
+            return res.status(401).json({ status: "ERR_AUTHENTICATION", message: msg })
         }
 
         bcrypt.compare(password,element.password) // Vérification du mot de passe
             .then(isValid => {
                 if(!isValid) {
                     const msg = "L'identifiant ou le mot de passe est incorrect. Veuillez essayer à nouveau."
-                    return res.status(401).json({ success: false, message: msg })
+                    return res.status(401).json({ status: "ERR_AUTHENTICATION", message: msg })
                 }
 
                 const token = jwt.sign({ // Génération du token avec encryptage de l'id user
@@ -44,20 +44,20 @@ exports.login = (req, res) => {
                 }, privateKey, { expiresIn: "48h"})
                 
                 const msg = "L'utilisateur a été connecté avec succès."
-                return res.status(200).json({ success: true, message: msg, data: {jeton: token, identifiant: element.nick_name }})
+                return res.status(200).json({ status: "SUCCESS", message: msg, data: {token: token, nick_name: element.nick_name }})
             })
     })
     .catch((error) => {
-        return res.status(500).json({ success: false, message: error.message })
+        return res.status(500).json({ status: "ERR_SERVER", message: error.message })
     })
 }
 
 /*********************************************************
-CHECK RÔLE (BOOLEANS)
+CHECK ROLES
 - retourne l'objet roles contenant un booléen pour chaque rôle
 - paramètre : token
 *********************************************************/
-exports.checkRoleReturnBooleans = (req, res) => {
+exports.checkRoles = (req, res) => {
     const authorizationHeader = req.headers.authorization
     const resRoles = {utilisateur: false, administrateur: false}
 
@@ -97,28 +97,25 @@ exports.checkRoleReturnBooleans = (req, res) => {
 }
 
 /*********************************************************
-CHECK RÔLE (STATUS)
-- vérifie si le rôle passé en paramètre correspond au rôle du user
-- retourne le statut de la requête :
-    - 200 : succès
-    - 401 : token non valide
-    - 403 : role non valide
-    - 500 : erreur serveur
-- paramètres : token et rôle
+CHECK IF USER ADMIN
+- vérifie la validité du token
+- vérifie si l'utilisateur est admin
+- paramètres : token
 *********************************************************/
-exports.checkRoleReturnStatus = (req, res) => {
+exports.checkIfUserAdmin = (req, res) => {
     const authorizationHeader = req.headers.authorization
-    const role = req.params.role
 
     if(!authorizationHeader) {
-        return res.status(400).end()
+        const msg = "Un jeton est nécessaire pour acceder à la ressource."
+        return res.status(400).json({ status: "ERR_REQUEST", message: msg })
     }
     
     try {
         const token = authorizationHeader.split(' ')[1]
 
         if(token === "null") {
-            return res.status(400).end()
+            const msg = "Un jeton est nécessaire pour acceder à la ressource."
+            return res.status(400).json({ status: "ERR_REQUEST", message: msg })
         }
 
         const decoded = jwt.verify(token, privateKey) // Vérification du token
@@ -129,18 +126,21 @@ exports.checkRoleReturnStatus = (req, res) => {
                 if(!user) {
                     return res.status(403).end()
                 }
-                if(user.role !== role) {
-                    return res.status(403).end()
+                if(user.role !== "admin") {
+                    const msg = "Vos droits sont insuffisants."
+                    return res.status(403).json({ status: "ERR_USER_RIGHTS", message: msg })
                 }
-                return res.status(200).end()
+                const msg = "L'utilisateur a été connecté avec succès."
+                return res.status(200).json({ status: "SUCCESS", message: msg })
             })
             .catch(() => {
-                return res.status(500).end()
+                return res.status(500).json({ status: "ERR_SERVER", message: error.message })
             }) 
     }
     catch(error) {
-        return res.status(401).end()
-    }
+        const msg = "L'identifiant ou le mot de passe est incorrect. Veuillez essayer à nouveau."
+        return res.status(401).json({ status: "ERR_AUTHENTICATION", message: msg })
+}
 }
 
 /*********************************************************
@@ -153,7 +153,7 @@ exports.protect = (req, res, next) => {
 
     if(!authorizationHeader) {
         const msg = "Un jeton est nécessaire pour acceder à la ressource."
-        return res.status(400).json({ success: false, message: msg })
+        return res.status(400).json({ status: "ERR_REQUEST", message: msg })
     }
 
     try {
@@ -161,14 +161,14 @@ exports.protect = (req, res, next) => {
 
         if(token === "null") {
             const msg = "Un jeton est nécessaire pour acceder à la ressource."
-            return res.status(400).json({ success: false, message: msg })
+            return res.status(400).json({ status: "ERR_REQUEST", message: msg })
         }
 
         const decoded = jwt.verify(token, privateKey) // Vérification du token
         req.userId = decoded.data // Décryptage de l'id user
     }
     catch(error) {
-        return res.status(401).json({ success: false, message: error.message })
+        return res.status(401).json({ status: "ERR_CONSTRAINT", message: error.message })
     }
 
     return next()
@@ -185,13 +185,13 @@ exports.restrictTo = (roles) => {
             .then(user => {
                 if(!user || !roles.includes(user.role)) { // La liste des rôles autorisés contient-elle le rôle du user ?
                     const msg = "Vos droits sont insuffisants."
-                    return res.status(403).json({ success: false, message: msg })
+                    return res.status(403).json({ status: "ERR_USER_RIGHTS", message: msg })
                 }
 
                 return next()
             })
             .catch(error => {
-                return res.status(500).json({ success: false, message: error.message })
+                return res.status(500).json({ status: "ERR_SERVER", message: error.message })
             })
     }
 }

@@ -23,9 +23,9 @@ const AreaRouter = require('./routes/area.routes')
 
 app 
     .use('/api/auth', AuthRouter)
-    .use('/api/areatype', AreaTypeRouter)
-    .use('/api/areazone', AreaZoneRouter)
-    .use('/api/area', AreaRouter)
+    .use('/api/areatypes', AreaTypeRouter)
+    .use('/api/areazones', AreaZoneRouter)
+    .use('/api/areas', AreaRouter)
 
 /*********************************************************
 Ouverture du port

@@ -13,14 +13,14 @@ router
 Composant Menu
 *********************************************************/
 router
-    .route('/checkrole')
-    .get(AuthController.checkRoleReturnBooleans)
+    .route('/checkroles')
+    .get(AuthController.checkRoles)
 
 /*********************************************************
 Pages d'administration
 *********************************************************/
 router
-    .route('/checkrole/:role')
-    .get(AuthController.checkRoleReturnStatus)
+    .route('/checkadmin')
+    .get(AuthController.checkIfUserAdmin)
 
 module.exports = router;

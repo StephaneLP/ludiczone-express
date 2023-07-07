@@ -14,10 +14,10 @@ exports.findAreaZoneForHomePage = (req, res) => {
         })
         .then((element) => {
             const msg = "La liste des zones a bien été retournée."
-            return res.status(200).json({ success: true, message: msg, data: element })
+            return res.status(200).json({ status: "SUCCESS", message: msg, data: element })
         })
         .catch((error) => {
-            return res.status(500).json({ success: false, message: error.message, data: error })
+            return res.status(500).json({ status: "ERR_SERVER", message: error.message })
         })  
 }
 
@@ -40,16 +40,16 @@ exports.findAllAreaZone = (req, res) => {
         })
         .then((element) => {
             const msg = "La liste des zones a bien été retournée."
-            return res.status(200).json({ success: true, message: msg, data: element })
+            return res.status(200).json({ status: "SUCCESS", message: msg, data: element })
         })
         .catch((error) => {
-            return res.status(500).json({ success: false, message: error.message, data: error })
+            return res.status(500).json({ status: "ERR_SERVER", message: error.message })
         })  
 }
 
 /*********************************************************
 GET BY ID
-- retourne une zone
+- retourne un type de loisir
 - paramètre : clé primaire
 *********************************************************/
 exports.findAreaZoneById = (req, res) => {
@@ -59,40 +59,40 @@ exports.findAreaZoneById = (req, res) => {
         .then((element) => {
             if(element === null) {
                 const msg = "La zone n'existe pas."
-                return res.status(404).json({ success: false, message: msg, data: {} })                
+                return res.status(404).json({ status: "ERR_NOT_FOUND", message: msg })                
             }
             
-            const msg = "La zone a bien été retournée."
-            return res.status(200).json({ success: true, message: msg, data: element })
+            const msg = "La zone a bien été retourné."
+            return res.status(200).json({ status: "SUCCESS", message: msg, data: element })
         })
         .catch((error) => {
-            return res.status(500).json({ success: false, message: error.message, data: error })
+            return res.status(500).json({ status: "ERR_SERVER", message: error.message })
         })  
 }
 
 /*********************************************************
 CREATE
-- crée et retourne une zone
+- crée et retourne un type de loisir
 *********************************************************/
 exports.createAreaZone = (req, res) => {
     AreaZoneModel.create(req.body)
     .then((element) => {
         const  msg = `La zone '${element.name}' a bien été ajoutée.`
-        return res.status(200).json({ success: true, message: msg, data: element })
+        return res.status(200).json({ status: "SUCCESS", message: msg })
     })
     .catch(error => {
         if(error instanceof UniqueConstraintError || error instanceof ValidationError){
-            return res.status(409).json({ success: false, message: error.message, data: error })    
+            return res.status(409).json({ status: "ERR_CONSTRAINT", message: error.message })    
         }        
         else {
-            return res.status(500).json({ success: false, message: error.message, data: error })    
+            return res.status(500).json({ status: "ERR_SERVER", message: error.message })    
         }
     })
 }
 
 /*********************************************************
 UPDATE
-- modifie une zone
+- modifie un type de loisir
 - paramètres : clé primaire et données
 *********************************************************/
 exports.updateAreaZone = (req, res) => {
@@ -104,24 +104,24 @@ exports.updateAreaZone = (req, res) => {
     .then((element) => {
         if(element[0] === 0) { // element[0] indique le nombre d'éléments modifiés
             const msg = `Modification impossible : aucun élément ne correspond à l'id : ${id}.`
-            return res.status(404).json({ success: false, message: msg, data: {} })
+            return res.status(404).json({ status: "ERR_NOT_FOUND", message: msg })
         }
 
         const msg = `La zone '${req.body.name}' a bien été modifiée.`
-        return res.status(200).json({ success: true, message: msg, data: {} })
+        return res.status(200).json({ status: "SUCCESS", message: msg })
     })
     .catch(error => {
         if(error instanceof UniqueConstraintError || error instanceof ValidationError){
-            return res.status(409).json({ success: false, message: error.message, data: error })    
+            return res.status(409).json({ status: "ERR_CONSTRAINT", message: error.message })    
         }
 
-        return res.status(500).json({ success: false, message: error.message, data: error })    
+        return res.status(500).json({ status: "ERR_SERVER", message: error.message })    
     })
 }
 
 /*********************************************************
 DELETE
-- supprime une zone
+- supprime un type de loisir
 - paramètre : clé primaire
 *********************************************************/
 exports.deleteAreaZone = (req, res) => {
@@ -130,21 +130,21 @@ exports.deleteAreaZone = (req, res) => {
     AreaZoneModel.destroy({
         where: {id: id}
     })
-    .then((element) => { // element indique le nombre d'éléments supprimés
-        if(element === 0) {
+    .then((element) => {
+        if(element === 0) { // element indique le nombre d'éléments supprimés
             const msg = `Suppression impossible : aucun élément ne correspond à l'id : ${id}.`
-            return res.status(404).json({ success: false, message: msg, data: {} })
+            return res.status(404).json({ status: "ERR_NOT_FOUND", message: msg })
         }
 
-        const msg = `L'élément id ${id} a bien été supprimé.`
-        return res.status(200).json({ success: true, message: msg, data: {} })
+        const msg = `La zone a bien été supprimée.`
+        return res.status(200).json({ status: "SUCCESS", message: msg })
     })
     .catch((error) => {
         if(error instanceof ForeignKeyConstraintError){
             const msg = `Suppression impossible : des enregistrements sont liés.`
-            return res.status(409).json({ success: false, message: msg, data: error })
+            return res.status(409).json({ status: "ERR_CONSTRAINT", message: msg })
         }
 
-        return res.status(500).json({ success: false, message: error.message, data: error })            
+        return res.status(500).json({ status: "ERR_SERVER", message: error.message })            
     })
 }

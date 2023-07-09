@@ -54,22 +54,22 @@ exports.login = (req, res) => {
 
 /*********************************************************
 CHECK ROLES
-- retourne l'objet roles contenant un booléen pour chaque rôle
+- retourne un objet contenant un booléen pour chaque rôle
 - paramètre : token
 *********************************************************/
 exports.checkRoles = (req, res) => {
     const authorizationHeader = req.headers.authorization
-    const resRoles = {utilisateur: false, administrateur: false}
+    const resRoles = {isUser: false, isAdmin: false}
 
     if(!authorizationHeader) {
-        return res.json({roles: resRoles})
+        return res.json(resRoles)
     }
     
     try {
         const token = authorizationHeader.split(' ')[1]
 
         if(token === "null") {
-            return res.json({roles: resRoles})
+            return res.json(resRoles)
         }
 
         const decoded = jwt.verify(token, privateKey) // Vérification du token
@@ -79,20 +79,20 @@ exports.checkRoles = (req, res) => {
             .then((user) => {
                 if(user) {
                     if(user.role === "user") {
-                        resRoles.utilisateur = true
+                        resRoles.isUser = true
                     }
                     if(user.role === "admin") {
-                        resRoles.administrateur = true
+                        resRoles.isAdmin = true
                     }
                 }
-                return res.json({roles: resRoles})
+                return res.json(resRoles)
             })
             .catch(() => {
-                return res.json({roles: resRoles})
+                return res.json(resRoles)
             }) 
     }
     catch(error) {
-        return res.json({roles: resRoles})
+        return res.json(resRoles)
     }
 }
 
@@ -106,7 +106,7 @@ exports.checkIfUserAdmin = (req, res) => {
     const authorizationHeader = req.headers.authorization
 
     if(!authorizationHeader) {
-        const msg = "Un jeton est nécessaire pour acceder à la ressource."
+        const msg = "Un jeton est nécessaire pour accéder  à la ressource."
         return res.status(400).json({ status: "ERR_REQUEST", message: msg })
     }
     
@@ -114,7 +114,7 @@ exports.checkIfUserAdmin = (req, res) => {
         const token = authorizationHeader.split(' ')[1]
 
         if(token === "null") {
-            const msg = "Un jeton est nécessaire pour acceder à la ressource."
+            const msg = "Un jeton est nécessaire pour accéder  à la ressource."
             return res.status(400).json({ status: "ERR_REQUEST", message: msg })
         }
 
@@ -168,7 +168,7 @@ exports.protect = (req, res, next) => {
         req.userId = decoded.data // Décryptage de l'id user
     }
     catch(error) {
-        return res.status(401).json({ status: "ERR_CONSTRAINT", message: error.message })
+        return res.status(401).json({ status: "ERR_AUTHENTICATION", message: error.message })
     }
 
     return next()

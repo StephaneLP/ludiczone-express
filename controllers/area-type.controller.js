@@ -7,7 +7,7 @@ GET FOR HOME PAGE
 - champs : "id", "name", "picture"
 - paramètres : sans
 *********************************************************/
-exports.findAreaTypeForHomePage = (req, res) => {
+exports.findAreaType = (req, res) => {
     AreaTypeModel.findAll({
         attributes: ["id", "name", "picture"],
         order: [["name","asc"]]

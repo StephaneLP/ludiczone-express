@@ -8,7 +8,7 @@ Pages visiteurs : Home Page
 *********************************************************/
 router
     .route('/')
-    .get(AreaZoneController.findAreaZoneForHomePage)
+    .get(AreaZoneController.findAreaZone)
 
 /*********************************************************
 Pages administrateurs

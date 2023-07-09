@@ -7,7 +7,7 @@ GET FOR HOME PAGE
 - champs : "id", "name", "picture"
 - paramètres : sans
 *********************************************************/
-exports.findAreaZoneForHomePage = (req, res) => {
+exports.findAreaZone = (req, res) => {
     AreaZoneModel.findAll({
         attributes: ["id", "name", "picture"],
         order: [["name","asc"]]
@@ -62,7 +62,7 @@ exports.findAreaZoneById = (req, res) => {
                 return res.status(404).json({ status: "ERR_NOT_FOUND", message: msg })                
             }
             
-            const msg = "La zone a bien été retourné."
+            const msg = "La zone a bien été retournée."
             return res.status(200).json({ status: "SUCCESS", message: msg, data: element })
         })
         .catch((error) => {

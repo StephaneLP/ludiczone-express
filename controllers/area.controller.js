@@ -1,28 +1,35 @@
 const { AreaModel, AreaTypeModel, AreaZoneModel } = require('../db/sequelize')
 const { Op, UniqueConstraintError, ValidationError, ForeignKeyConstraintError } = require("sequelize")
 
+/*********************************************************
+GET FOR SEARCH PAGE
+- retourne la liste des salles
+- champs : ...
+- paramètres : tri et filtre
+*********************************************************/
 exports.findAllArea = (req, res) => {
-    const search = req.query.search || ""
+    const name = req.query.name || ""
     const sort = req.query.sort || "asc"
     const typeId = req.query.typeId || ""
     const zoneId = req.query.zoneId || ""
 
-    const tabWhere =  [{name: {[Op.like]: `%${search}%`}}]
-    if(typeId !== "") {tabWhere.push({AreaTypeId: typeId})}
-    if(zoneId !== "") {tabWhere.push({AreaZoneId: zoneId})}
+    const clauseWhere = []
+    if(name !== "") {clauseWhere.push({name: {[Op.like]: `%${name}%`}})}
+    if(typeId !== "") {clauseWhere.push({AreaTypeId: typeId})}
+    if(zoneId !== "") {clauseWhere.push({AreaZoneId: zoneId})}
 
     AreaModel.findAll({
-        where:  {[Op.and]: tabWhere},
+        where:  {[Op.and]: clauseWhere}, // si clauseWhere = [], aucune clause n'est appliquée
         order: [['name',sort]],
         include: [AreaTypeModel,
                 AreaZoneModel]
         })
         .then((element) => {
             const msg = "La liste des salles a bien été retournée."
-            res.status(200).json({ success: true, message: msg, data: element })
+            res.status(200).json({ status: "SUCCESS", message: msg, data: element })
         })
         .catch((error) => {
-            res.status(500).json({ success: false, message: error.message, data: error })
+            res.status(500).json({ status: "ERR_SERVER", message: error.message })
         })  
 }
 

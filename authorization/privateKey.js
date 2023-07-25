@@ -1,1 +1,0 @@
-module.exports = "ceci_est_une_cle_tres_secrete"

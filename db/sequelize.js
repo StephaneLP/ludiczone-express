@@ -3,7 +3,7 @@ const { Sequelize, DataTypes } = require("sequelize")
 /*********************************************************
 Connexion à la BDD
 *********************************************************/
-const sequelize = new Sequelize("db_funarea", "root", "", {
+const sequelize = new Sequelize("ludiczone", "root", "", {
     host: "localhost",
     dialect: "mariadb",
     logging: false,

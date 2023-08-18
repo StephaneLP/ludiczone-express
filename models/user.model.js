@@ -7,20 +7,6 @@ const User =  (sequelize, DataTypes) => {
             primaryKey: true,
             autoIncrement: true,
         },
-        first_name: {
-            type: DataTypes.STRING(50),
-            allowNull: false,
-            validate: {
-                notEmpty: {msg: "Le champ 'prénom' ne peut pas être vide."}
-            },
-        },
-        last_name: {
-            type: DataTypes.STRING(50),
-            allowNull: false,
-            validate: {
-                notEmpty: {msg: "Le champ 'nom' ne peut pas être vide."}
-            },
-        },
         nick_name: {
             type: DataTypes.STRING(12),
             allowNull: false,
@@ -30,7 +16,7 @@ const User =  (sequelize, DataTypes) => {
             },
         },
         email: {
-            type: DataTypes.STRING(100),
+            type: DataTypes.STRING(254),
             allowNull: false,
             unique: {msg: "Enregistrement impossible : cet email est déjà utilisé."},
             validate: {

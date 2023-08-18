@@ -16,16 +16,18 @@ app
 /*********************************************************
 Routes
 *********************************************************/
-const AuthRouter = require('./routes/auth.routes')
 const AreaTypeRouter = require('./routes/area-type.routes')
 const AreaZoneRouter = require('./routes/area-zone.routes')
 const AreaRouter = require('./routes/area.routes')
+const AuthRouter = require('./routes/auth.routes')
+const UserRouter = require('./routes/user.routes')
 
 app 
-    .use('/api/auth', AuthRouter)
     .use('/api/areatypes', AreaTypeRouter)
     .use('/api/areazones', AreaZoneRouter)
     .use('/api/areas', AreaRouter)
+    .use('/api/auth', AuthRouter)
+    .use('/api/user', UserRouter)
 
 /*********************************************************
 Ouverture du port

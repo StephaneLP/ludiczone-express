@@ -1,9 +1,10 @@
-const { sequelize, AreaModel, AreaTypeModel, AreaZoneModel, UserModel } = require('./sequelize')
+const { sequelize, AreaModel, AreaTypeModel, AreaZoneModel, UserStatusModel, UserModel } = require('./sequelize')
 const bcrypt = require("bcrypt")
 
 const dataAreaType = require("./data/area-type.json")
 const dataAreaZone = require("./data/area-zone.json")
 const dataArea = require("./data/area.json")
+const dataUserStatus = require("./data/user-status.json")
 const dataUser = require("./data/user.json")
 
 /*********************************************************
@@ -20,9 +21,12 @@ const initDb = () => {
                     .then(() => {
                         Promise.all(setArea())
                         .then(() => {
-                            Promise.all(setUser())
+                            Promise.all(setUserStatus())
                             .then(() => {
-                                console.log("Import des données terminé (initDB).");
+                                Promise.all(setUser())
+                                .then(() => {
+                                    console.log("Import des données terminé (initDB).");
+                                })
                             })   
                         })
                     })
@@ -99,7 +103,25 @@ const setArea = () => {
 
 /*********************************************************
 Initialisation du tableau contenant les promesses qui :
-- inserent les zones dans la table user
+- inserent les statuts des utilisateurs dans la table user_status
+- à partir du fichier user-status.json
+*********************************************************/
+const setUserStatus = () => {
+    const tabPromesses = []
+
+    dataUserStatus.forEach((element) => {
+        const creer = UserStatusModel.create({
+            id: element.id,
+            name: element.name,
+        })
+        tabPromesses.push(creer)
+    })
+    return tabPromesses
+}
+
+/*********************************************************
+Initialisation du tableau contenant les promesses qui :
+- inserent les utilisateurs dans la table user
 - à partir du fichier user.json
 *********************************************************/
 const setUser = () => {
@@ -111,12 +133,11 @@ const setUser = () => {
                 return(
                     UserModel.create({
                         id: element.id,
-                        first_name: element.first_name,
-                        last_name: element.last_name,
                         nick_name: element.nick_name,
                         email: element.email,
                         password: hash,
                         role: element.role,
+                        UserStatusId: element.UserStatusId,
                     })                         
                 )
             })

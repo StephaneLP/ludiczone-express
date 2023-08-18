@@ -1,20 +1,18 @@
 [
     {
         "id": 1,
-        "first_name": "Stéphane",
-        "last_name": "Le Pajolec",
         "nick_name": "admin",
         "email": "stephane.lepajolec@lapiscine.pro",
-        "password": "mdp",
-        "role": "admin"
+        "password": "Egs37000",
+        "role": "admin",
+        "UserStatusId": 2
     },
     {
         "id": 2,
-        "first_name": "Stéphane",
-        "last_name": "Le Pajolec",
         "nick_name": "Steph",
         "email": "stephanelepajolec@outlook.com",
-        "password": "mdp",
-        "role": "user"
+        "password": "Egs37000",
+        "role": "user",
+        "UserStatusId": 2
     }    
 ]

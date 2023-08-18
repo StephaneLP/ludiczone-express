@@ -16,6 +16,7 @@ Import des models et des relations
 const AreaTypeModel = require("../models/area-type.model")(sequelize, DataTypes)
 const AreaZoneModel = require("../models/area-zone.model")(sequelize, DataTypes)
 const AreaModel = require("../models/area.model")(sequelize, DataTypes)
+const UserStatusModel = require("../models/user-status.model")(sequelize, DataTypes)
 const UserModel = require("../models/user.model")(sequelize, DataTypes)
 
 AreaModel.belongsTo(AreaTypeModel, {
@@ -28,6 +29,11 @@ AreaModel.belongsTo(AreaZoneModel, {
 })
 AreaZoneModel.hasMany(AreaModel)
 
+UserModel.belongsTo(UserStatusModel, {
+    foreignKey: {allowNull: false}
+})
+UserStatusModel.hasMany(UserModel)
+
 /*********************************************************
 Test de la connexion à la BDD
 *********************************************************/
@@ -35,4 +41,4 @@ sequelize.authenticate()
     .then(() => console.log("La connexion à la BDD a bien été établie"))
     .catch(error => console.error(`Impossible de se connecter à la BDD ${error}`))
 
-module.exports = { sequelize, AreaTypeModel, AreaZoneModel, AreaModel, UserModel }
+module.exports = { sequelize, AreaTypeModel, AreaZoneModel, AreaModel, UserModel, UserStatusModel }

@@ -48,6 +48,11 @@ const User =  (sequelize, DataTypes) => {
                 }
             }
         },
+        validated: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+        }
     }, {
         tableName: 'user',
         timestamps: true,

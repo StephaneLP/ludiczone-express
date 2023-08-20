@@ -4,7 +4,6 @@ const bcrypt = require("bcrypt")
 const dataAreaType = require("./data/area-type.json")
 const dataAreaZone = require("./data/area-zone.json")
 const dataArea = require("./data/area.json")
-const dataUserStatus = require("./data/user-status.json")
 const dataUser = require("./data/user.json")
 
 /*********************************************************
@@ -21,12 +20,9 @@ const initDb = () => {
                     .then(() => {
                         Promise.all(setArea())
                         .then(() => {
-                            Promise.all(setUserStatus())
+                            Promise.all(setUser())
                             .then(() => {
-                                Promise.all(setUser())
-                                .then(() => {
-                                    console.log("Import des données terminé (initDB).");
-                                })
+                                console.log("Import des données terminé (initDB).");
                             })   
                         })
                     })
@@ -103,24 +99,6 @@ const setArea = () => {
 
 /*********************************************************
 Initialisation du tableau contenant les promesses qui :
-- inserent les statuts des utilisateurs dans la table user_status
-- à partir du fichier user-status.json
-*********************************************************/
-const setUserStatus = () => {
-    const tabPromesses = []
-
-    dataUserStatus.forEach((element) => {
-        const creer = UserStatusModel.create({
-            id: element.id,
-            name: element.name,
-        })
-        tabPromesses.push(creer)
-    })
-    return tabPromesses
-}
-
-/*********************************************************
-Initialisation du tableau contenant les promesses qui :
 - inserent les utilisateurs dans la table user
 - à partir du fichier user.json
 *********************************************************/
@@ -137,7 +115,6 @@ const setUser = () => {
                         email: element.email,
                         password: hash,
                         role: element.role,
-                        UserStatusId: element.UserStatusId,
                     })                         
                 )
             })

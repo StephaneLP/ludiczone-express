@@ -1,4 +1,4 @@
-const mailFrom = require("../setting/mail")
+const mailFrom = require("../setting/senderAddress")
 const nodemailer = require("nodemailer");
 
 const sendMail = (subject, nickName, address) => {

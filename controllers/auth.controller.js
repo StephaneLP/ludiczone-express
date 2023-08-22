@@ -39,9 +39,10 @@ exports.login = (req, res) => {
                     return res.status(401).json({ status: "ERR_AUTHENTICATION", message: msg })
                 }
 
-                const token = jwt.sign({ // Génération du token avec encryptage de l'id user
-                    data: element.id,
-                }, privateKey, { expiresIn: "48h"})
+                const token = jwt.sign(
+                    { data: element.id },  // Génération du token avec encryptage de l'id user
+                    privateKey, 
+                    { expiresIn: "48h" })
                 
                 const msg = "L'utilisateur a été connecté avec succès."
                 return res.status(200).json({ status: "SUCCESS", message: msg, data: {token: token, nick_name: element.nick_name }})

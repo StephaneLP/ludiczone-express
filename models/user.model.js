@@ -48,7 +48,7 @@ const User =  (sequelize, DataTypes) => {
                 }
             }
         },
-        validated: {
+        verified_email: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: false,

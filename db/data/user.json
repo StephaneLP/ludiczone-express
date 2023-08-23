@@ -5,6 +5,7 @@
         "email": "stephane.lepajolec@lapiscine.pro",
         "password": "Egs37000",
         "role": "admin",
+        "verified_email": true,
         "UserStatusId": 2
     },
     {
@@ -13,6 +14,7 @@
         "email": "stephanelepajolec@outlook.com",
         "password": "Egs37000",
         "role": "user",
+        "verified_email": true,
         "UserStatusId": 2
     }    
 ]

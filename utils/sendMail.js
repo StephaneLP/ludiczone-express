@@ -2,11 +2,11 @@ const mailFrom = require("../setting/senderAddress")
 const nodemailer = require("nodemailer")
 const fs = require("fs")
 
-const sendMail = (address, subject, nickName, token) => {
+const sendMailRegistration = (address, subject, nickName, url) => {
     let data = fs.readFileSync("./templates/mailCheckAddress.html", { encoding: 'utf8' })
 
     data = data.replace("$pseudo", nickName)
-    data = data.replace("$token", token)
+    data = data.replace("$url", url)
 
     const transport = {
         service : "hotmail",
@@ -26,4 +26,4 @@ const sendMail = (address, subject, nickName, token) => {
     return transporter.sendMail(options)
 }
 
-module.exports = { sendMail }
+module.exports = { sendMailRegistration }

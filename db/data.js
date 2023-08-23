@@ -115,6 +115,7 @@ const setUser = () => {
                         email: element.email,
                         password: hash,
                         role: element.role,
+                        verified_email: element.verified_email
                     })                         
                 )
             })

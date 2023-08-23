@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt")
 const { UserModel } = require('../db/sequelize')
 const { UniqueConstraintError, ValidationError } = require("sequelize")
-const { sendMail } = require("../utils/sendMail")
+const { sendMailRegistration } = require("../utils/sendMail")
 const jwt = require("jsonwebtoken")
 const privateKey = require("../setting/privateKey")
 
@@ -20,15 +20,15 @@ exports.signUp = (req, res) => {
                     privateKey,
                     { expiresIn: "300000" })
 
-                sendMail(element.email, "Inscription site LudicZone", req.body.nick_name, token)
-                    .then((info) => {
-                        const  msg = `Un mail de validation de la création du compte a été envoyé à l'adresse : '${info.accepted[0]}'.`
-
-                        return res.status(200).json({ status: "SUCCESS", message: msg })
-                    })
-                    .catch((error) => {
-                        throw Error(error);
-                    })
+                const url = "http://localhost:3000/inscription-confirm/" + token
+                sendMailRegistration(element.email, "Inscription site LudicZone", req.body.nick_name, url)
+                .then((info) => {
+                    const  msg = `Un mail de validation de la création du compte a été envoyé à l'adresse : '${info.accepted[0]}'.`
+                    return res.status(200).json({ status: "SUCCESS", message: msg })
+                })
+                .catch((error) => {
+                    throw Error(error);
+                })
             })
             .catch(error => {
                 if(error instanceof UniqueConstraintError || error instanceof ValidationError){

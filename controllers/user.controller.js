@@ -52,7 +52,23 @@ exports.signUpConfirm = (req, res) => {
     try {
         const token = req.params.token
         const decoded = jwt.verify(token, privateKey) // Vérification du token
-        return res.status(200).json({ status: "SUCCESS", message: msg })
+        const id = decoded.data // Décryptage de l'id user
+
+        UserModel.update({ verified_email: true },{
+            where: {id: id}
+        })
+        .then((element) => {
+            if(element[0] === 0) { // element[0] indique le nombre d'éléments modifiés
+                const msg = "Inscription impossible : aucun utilisateur ne correspond au lien de confirmation utilisé."
+                return res.status(404).json({ status: "ERR_NOT_FOUND", message: msg })
+            }
+    
+            const msg = `L'adresse '${element.email}' a bien été confirmée.`
+            return res.status(200).json({ status: "SUCCESS", message: msg })            
+        })
+        .catch(error => {
+            return res.status(500).json({ status: "ERR_SERVER", message: error.message })
+        })
     }
     catch(error) {
         let msg = ""

@@ -9,4 +9,8 @@ router
     .route('/signup')
     .post(UserController.signUp)
 
+router
+    .route('/signup/:token')
+    .put(UserController.signUpConfirm)
+
 module.exports = router;

@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken")
 const privateKey = require("../setting/privateKey")
 
 /*********************************************************
-SIGNUP (inscription)
+CREATE (SIGNUP : inscription)
 - crée et retourne un utilisateur
 *********************************************************/
 exports.signUp = (req, res) => {
@@ -16,19 +16,19 @@ exports.signUp = (req, res) => {
         UserModel.create(req.body)
             .then((element) => {
                 const token = jwt.sign(
-                    { id: element.id }, // Génération du token avec encryptage de l'id user
+                    { data: element.id }, // Génération du token avec encryptage de l'id user
                     privateKey,
                     { expiresIn: "300000" })
 
                 const url = "http://localhost:3000/inscription-confirm/" + token
                 sendMailRegistration(element.email, "Inscription site LudicZone", req.body.nick_name, url)
-                .then((info) => {
-                    const  msg = `Un mail de validation de la création du compte a été envoyé à l'adresse : '${info.accepted[0]}'.`
-                    return res.status(200).json({ status: "SUCCESS", message: msg })
-                })
-                .catch((error) => {
-                    throw Error(error);
-                })
+                    .then((info) => {
+                        const  msg = `Un mail de validation de la création du compte a été envoyé à l'adresse : '${info.accepted[0]}'.`
+                        return res.status(200).json({ status: "SUCCESS", message: msg })
+                    })
+                    .catch((error) => {
+                        throw Error(error);
+                    })
             })
             .catch(error => {
                 if(error instanceof UniqueConstraintError || error instanceof ValidationError){
@@ -44,3 +44,28 @@ exports.signUp = (req, res) => {
     })
 }
 
+/*********************************************************
+UPDATE (SIGNUP : confirmation de l'asresse email)
+- met à jour l'utilisateur
+*********************************************************/
+exports.signUpConfirm = (req, res) => {
+    try {
+        const token = req.params.token
+        const decoded = jwt.verify(token, privateKey) // Vérification du token
+        return res.status(200).json({ status: "SUCCESS", message: msg })
+    }
+    catch(error) {
+        let msg = ""
+        switch(error.name) {
+            case "TokenExpiredError":
+                msg = "Le lien de validation de l'adresse email est expiré."
+                break
+            case "JsonWebTokenError":
+                msg = "Le lien de validation de l'adresse email est invalide."
+                break
+            default:
+                msg = "Erreur de vérification  de l'adresse email."
+        }
+        return res.status(401).json({ status: "ERR_AUTHENTICATION", message: msg })
+    }
+}

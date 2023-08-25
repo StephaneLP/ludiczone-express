@@ -106,19 +106,14 @@ const setUser = () => {
     const tabPromesses = []
 
     dataUser.forEach((element) => {
-        const creer = bcrypt.hash(element.password,10)
-            .then((hash) => {
-                return(
-                    UserModel.create({
-                        id: element.id,
-                        nick_name: element.nick_name,
-                        email: element.email,
-                        password: hash,
-                        role: element.role,
-                        verified_email: element.verified_email
-                    })                         
-                )
-            })
+        const creer = UserModel.create({
+            id: element.id,
+            nick_name: element.nick_name,
+            email: element.email,
+            password: bcrypt.hashSync(element.password,10),
+            role: element.role,
+            verified_email: element.verified_email
+        })                 
         tabPromesses.push(creer)
     })
     return tabPromesses

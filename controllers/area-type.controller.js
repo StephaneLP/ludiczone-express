@@ -8,16 +8,17 @@ GET FOR HOME PAGE
 - paramètres : sans
 *********************************************************/
 exports.findAreaType = (req, res) => {
-    AreaTypeModel.findAll({
-        attributes: ["id", "name", "picture"],
-        order: [["name","asc"]]
+    AreaTypeModel
+        .findAll({
+            attributes: ["id", "name", "picture"],
+            order: [["name","asc"]]
         })
         .then((element) => {
             const msg = "La liste des types de loisir a bien été retournée."
-            return res.status(200).json({ status: "SUCCESS", message: msg, data: element })
+            res.status(200).json({ status: "SUCCESS", message: msg, data: element })
         })
         .catch((error) => {
-            return res.status(500).json({ status: "ERR_SERVER", message: error.message })
+            res.status(500).json({ status: "ERR_SERVER", message: error.message })
         })  
 }
 
@@ -32,18 +33,19 @@ exports.findAllAreaType = (req, res) => {
     const name = req.query.name || ""
 
     const clauseWhere = []
-    if(name !== "") {clauseWhere.push({name: {[Op.like]: `%${name}%`}})}
+    if(name !== "") { clauseWhere.push({ name: { [Op.like]: `%${name}%` } }) }
 
-    AreaTypeModel.findAll({
-        where: {[Op.and]: clauseWhere}, // si clauseWhere = [], aucune clause n'est appliquée
-        order: [["name",sort]]
+    AreaTypeModel
+        .findAll({
+            where: {[Op.and]: clauseWhere}, // si clauseWhere = [], aucune clause n'est appliquée
+            order: [["name",sort]]
         })
         .then((element) => {
             const msg = "La liste des types de loisir a bien été retournée."
-            return res.status(200).json({ status: "SUCCESS", message: msg, data: element })
+            res.status(200).json({ status: "SUCCESS", message: msg, data: element })
         })
         .catch((error) => {
-            return res.status(500).json({ status: "ERR_SERVER", message: error.message })
+            res.status(500).json({ status: "ERR_SERVER", message: error.message })
         })  
 }
 
@@ -55,18 +57,19 @@ GET BY ID
 exports.findAreaTypeById = (req, res) => {
     const id = req.params.id
 
-    AreaTypeModel.findByPk(id)
+    AreaTypeModel
+        .findByPk(id)
         .then((element) => {
-            if(element === null) {
+            if(!element) {
                 const msg = "Le type de loisir n'existe pas."
                 return res.status(404).json({ status: "ERR_NOT_FOUND", message: msg })                
             }
             
             const msg = "Le type de loisir a bien été retourné."
-            return res.status(200).json({ status: "SUCCESS", message: msg, data: element })
+            res.status(200).json({ status: "SUCCESS", message: msg, data: element })
         })
         .catch((error) => {
-            return res.status(500).json({ status: "ERR_SERVER", message: error.message })
+            res.status(500).json({ status: "ERR_SERVER", message: error.message })
         })  
 }
 
@@ -75,19 +78,18 @@ CREATE
 - crée et retourne un type de loisir
 *********************************************************/
 exports.createAreaType = (req, res) => {
-    AreaTypeModel.create(req.body)
-    .then((element) => {
-        const  msg = `Le type de loisir '${element.name}' a bien été ajouté.`
-        return res.status(200).json({ status: "SUCCESS", message: msg })
-    })
-    .catch(error => {
-        if(error instanceof UniqueConstraintError || error instanceof ValidationError){
-            return res.status(409).json({ status: "ERR_CONSTRAINT", message: error.message })    
-        }        
-        else {
-            return res.status(500).json({ status: "ERR_SERVER", message: error.message })    
-        }
-    })
+    AreaTypeModel
+        .create(req.body)
+        .then((element) => {
+            const  msg = `Le type de loisir '${element.name}' a bien été ajouté.`
+            res.status(200).json({ status: "SUCCESS", message: msg })
+        })
+        .catch((error) => {
+            if(error instanceof UniqueConstraintError || error instanceof ValidationError){
+                return res.status(409).json({ status: "ERR_CONSTRAINT", message: error.message })    
+            }        
+            res.status(500).json({ status: "ERR_SERVER", message: error.message })    
+        })
 }
 
 /*********************************************************
@@ -98,25 +100,32 @@ UPDATE
 exports.updateAreaType = (req, res) => {
     const id = req.params.id
 
-    AreaTypeModel.update(req.body,{
-        where: {id: id}
-    })
-    .then((element) => {
-        if(element[0] === 0) { // element[0] indique le nombre d'éléments modifiés
-            const msg = `Modification impossible : aucun élément ne correspond à l'id : ${id}.`
-            return res.status(404).json({ status: "ERR_NOT_FOUND", message: msg })
-        }
+    AreaTypeModel
+        .findByPk(id)
+        .then((element) => {
+            if(!element) {
+                const msg = `Modification impossible : aucun élément ne correspond à l'id : ${id}.`
+                return res.status(404).json({ status: "ERR_NOT_FOUND", message: msg })
+            }
 
-        const msg = `Le type de loisir '${req.body.name}' a bien été modifié.`
-        return res.status(200).json({ status: "SUCCESS", message: msg })
-    })
-    .catch(error => {
-        if(error instanceof UniqueConstraintError || error instanceof ValidationError){
-            return res.status(409).json({ status: "ERR_CONSTRAINT", message: error.message })    
-        }
-
-        return res.status(500).json({ status: "ERR_SERVER", message: error.message })    
-    })
+            element
+                .update(req.body,{
+                    where: {id: id}
+                })
+                .then(() => {
+                    const msg = `Le type de loisir '${req.body.name}' a bien été modifié.`
+                    res.status(200).json({ status: "SUCCESS", message: msg })
+                })
+                .catch(error => {
+                    if(error instanceof UniqueConstraintError || error instanceof ValidationError){
+                        return res.status(409).json({ status: "ERR_CONSTRAINT", message: error.message })    
+                    }
+                    throw Error(error)   
+                })
+        })
+        .catch((error) => {
+            res.status(500).json({ status: "ERR_SERVER", message: error.message })
+        }) 
 }
 
 /*********************************************************
@@ -130,21 +139,20 @@ exports.deleteAreaType = (req, res) => {
     AreaTypeModel.destroy({
         where: {id: id}
     })
-    .then((element) => {
-        if(element === 0) { // element indique le nombre d'éléments supprimés
+    .then((count) => {
+        if(count === 0) { // element indique le nombre d'éléments supprimés
             const msg = `Suppression impossible : aucun élément ne correspond à l'id : ${id}.`
             return res.status(404).json({ status: "ERR_NOT_FOUND", message: msg })
         }
 
         const msg = `Le type de loisir a bien été supprimé.`
-        return res.status(200).json({ status: "SUCCESS", message: msg })
+        res.status(200).json({ status: "SUCCESS", message: msg })
     })
     .catch((error) => {
         if(error instanceof ForeignKeyConstraintError){
             const msg = `Suppression impossible : des enregistrements sont liés.`
             return res.status(409).json({ status: "ERR_CONSTRAINT", message: msg })
         }
-
-        return res.status(500).json({ status: "ERR_SERVER", message: error.message })            
+        res.status(500).json({ status: "ERR_SERVER", message: error.message })            
     })
 }

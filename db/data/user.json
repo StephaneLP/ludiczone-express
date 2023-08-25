@@ -3,7 +3,7 @@
         "id": 1,
         "nick_name": "admin",
         "email": "stephane.lepajolec@lapiscine.pro",
-        "password": "Egs37000",
+        "password": "Egs33700",
         "role": "admin",
         "verified_email": true,
         "UserStatusId": 2
@@ -12,7 +12,7 @@
         "id": 2,
         "nick_name": "Steph",
         "email": "stephanelepajolec@outlook.com",
-        "password": "Egs37000",
+        "password": "Egs33700",
         "role": "user",
         "verified_email": true,
         "UserStatusId": 2

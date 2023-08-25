@@ -18,39 +18,50 @@ exports.login = (req, res) => {
         return res.status(400).json({ status: "ERR_REQUEST", message: msg })
     }
 
-    UserModel.findOne({
-        where: {
-            [Op.or]: [
-                {nick_name: username},
-                {email: username}
-            ]       
-        }
-    })
-    .then((element) => {
-        if(!element) {
-            const msg = "L'identifiant ou le mot de passe est incorrect. Veuillez essayer à nouveau."
-            return res.status(401).json({ status: "ERR_AUTHENTICATION", message: msg })
-        }
+    UserModel
+        .findOne({
+            where: {
+                [Op.or]: [
+                    {nick_name: username},
+                    {email: username}
+                ]       
+            }
+        })
+        .then((element) => {
+            if(!element) {
+                const msg = "L'identifiant ou le mot de passe est incorrect. Veuillez essayer à nouveau."
+                return res.status(401).json({ status: "ERR_AUTHENTICATION", message: msg })
+            }
 
-        bcrypt.compare(password,element.password) // Vérification du mot de passe
-            .then(isValid => {
-                if(!isValid) {
-                    const msg = "L'identifiant ou le mot de passe est incorrect. Veuillez essayer à nouveau."
-                    return res.status(401).json({ status: "ERR_AUTHENTICATION", message: msg })
-                }
+            bcrypt
+                .compare(password,element.password) // Vérification du mot de passe
+                .then(isValid => {
+                    if(!isValid) {
+                        const msg = "L'identifiant ou le mot de passe est incorrect. Veuillez essayer à nouveau."
+                        return res.status(401).json({ status: "ERR_AUTHENTICATION", message: msg })
+                    }
 
-                const token = jwt.sign(
-                    { data: element.id },  // Génération du token avec encryptage de l'id user
-                    privateKey, 
-                    { expiresIn: "48h" })
-                
-                const msg = "L'utilisateur a été connecté avec succès."
-                return res.status(200).json({ status: "SUCCESS", message: msg, data: {token: token, nick_name: element.nick_name }})
-            })
-    })
-    .catch((error) => {
-        return res.status(500).json({ status: "ERR_SERVER", message: error.message })
-    })
+                    try {
+                        const token = jwt.sign(
+                            { data: element.id },  // Génération du token avec encryptage de l'id user
+                            privateKey, 
+                            { expiresIn: "48h" })
+                        
+                        const msg = "L'utilisateur a été connecté avec succès."
+                        res.status(200).json({ status: "SUCCESS", message: msg, data: {token: token, nick_name: element.nick_name }})
+                    }
+                    catch(error){
+                        const msg = "Echec! La génération du token a échoué."
+                        res.status(401).json({ status: "ERR_AUTHENTICATION", message: `${msg} (${error.message})` })
+                     }
+                })
+                .catch((error) => {
+                    res.status(500).json({ status: "ERR_SERVER", message: error.message })
+                })
+        })
+        .catch((error) => {
+            res.status(500).json({ status: "ERR_SERVER", message: error.message })
+        })
 }
 
 /*********************************************************
@@ -73,27 +84,24 @@ exports.checkRoles = (req, res) => {
             return res.json(resRoles)
         }
 
-        const decoded = jwt.verify(token, privateKey) // Vérification du token
-        const id = decoded.data // Décryptage de l'id user
+        const payload = jwt.verify(token, privateKey) // Vérification du token
+        const id = payload.data // Décryptage de l'id user
 
-        UserModel.findByPk(id) // Vérification du role du user
+        UserModel
+            .findByPk(id) // Vérification du role du user
             .then((user) => {
                 if(user) {
-                    if(user.role === "user") {
-                        resRoles.isUser = true
-                    }
-                    if(user.role === "admin") {
-                        resRoles.isAdmin = true
-                    }
+                    if(user.role === "user") resRoles.isUser = true
+                    if(user.role === "admin") resRoles.isAdmin = true
                 }
-                return res.json(resRoles)
+                res.json(resRoles)
             })
             .catch(() => {
-                return res.json(resRoles)
+                res.json(resRoles)
             }) 
     }
     catch(error) {
-        return res.json(resRoles)
+        res.json(resRoles)
     }
 }
 
@@ -122,7 +130,8 @@ exports.checkIfUserAdmin = (req, res) => {
         const decoded = jwt.verify(token, privateKey) // Vérification du token
         const id = decoded.data // Décryptage de l'id user
 
-        UserModel.findByPk(id) // Vérification du role du user
+        UserModel
+            .findByPk(id) // Vérification du role du user
             .then(user => {
                 if(!user) {
                     return res.status(403).end()
@@ -132,16 +141,16 @@ exports.checkIfUserAdmin = (req, res) => {
                     return res.status(403).json({ status: "ERR_USER_RIGHTS", message: msg })
                 }
                 const msg = "L'utilisateur a été connecté avec succès."
-                return res.status(200).json({ status: "SUCCESS", message: msg })
+                res.status(200).json({ status: "SUCCESS", message: msg })
             })
             .catch(() => {
-                return res.status(500).json({ status: "ERR_SERVER", message: error.message })
+                res.status(500).json({ status: "ERR_SERVER", message: error.message })
             }) 
     }
     catch(error) {
         const msg = "L'identifiant ou le mot de passe est incorrect. Veuillez essayer à nouveau."
-        return res.status(401).json({ status: "ERR_AUTHENTICATION", message: msg })
-}
+        res.status(401).json({ status: "ERR_AUTHENTICATION", message: msg })
+    }
 }
 
 /*********************************************************
@@ -165,8 +174,8 @@ exports.protect = (req, res, next) => {
             return res.status(400).json({ status: "ERR_REQUEST", message: msg })
         }
 
-        const decoded = jwt.verify(token, privateKey) // Vérification du token
-        req.userId = decoded.data // Décryptage de l'id user
+        const payload = jwt.verify(token, privateKey) // Vérification du token
+        req.userId = payload.data // Décryptage de l'id user
     }
     catch(error) {
         return res.status(401).json({ status: "ERR_AUTHENTICATION", message: error.message })
@@ -182,7 +191,8 @@ RESTRICT TO
 *********************************************************/
 exports.restrictTo = (roles) => {
     return (req, res, next) => {
-        UserModel.findByPk(req.userId)
+        UserModel
+            .findByPk(req.userId)
             .then(user => {
                 if(!user || !roles.includes(user.role)) { // La liste des rôles autorisés contient-elle le rôle du user ?
                     const msg = "Vos droits sont insuffisants."

@@ -8,16 +8,17 @@ GET FOR HOME PAGE
 - paramètres : sans
 *********************************************************/
 exports.findAreaZone = (req, res) => {
-    AreaZoneModel.findAll({
-        attributes: ["id", "name", "picture"],
-        order: [["name","asc"]]
+    AreaZoneModel
+        .findAll({
+            attributes: ["id", "name", "picture"],
+            order: [["name","asc"]]
         })
         .then((element) => {
             const msg = "La liste des zones a bien été retournée."
-            return res.status(200).json({ status: "SUCCESS", message: msg, data: element })
+            res.status(200).json({ status: "SUCCESS", message: msg, data: element })
         })
         .catch((error) => {
-            return res.status(500).json({ status: "ERR_SERVER", message: error.message })
+            res.status(500).json({ status: "ERR_SERVER", message: error.message })
         })  
 }
 
@@ -32,96 +33,104 @@ exports.findAllAreaZone = (req, res) => {
     const name = req.query.name || ""
 
     const clauseWhere = []
-    if(name !== "") {clauseWhere.push({name: {[Op.like]: `%${name}%`}})}
+    if(name !== "") { clauseWhere.push({ name: { [Op.like]: `%${name}%` } }) }
 
-    AreaZoneModel.findAll({
-        where: {[Op.and]: clauseWhere}, // si clauseWhere = [], aucune clause n'est appliquée
-        order: [["name",sort]]
+    AreaZoneModel
+        .findAll({
+            where: {[Op.and]: clauseWhere}, // si clauseWhere = [], aucune clause n'est appliquée
+            order: [["name",sort]]
         })
         .then((element) => {
             const msg = "La liste des zones a bien été retournée."
-            return res.status(200).json({ status: "SUCCESS", message: msg, data: element })
+            res.status(200).json({ status: "SUCCESS", message: msg, data: element })
         })
         .catch((error) => {
-            return res.status(500).json({ status: "ERR_SERVER", message: error.message })
+            res.status(500).json({ status: "ERR_SERVER", message: error.message })
         })  
 }
 
 /*********************************************************
 GET BY ID
-- retourne un type de loisir
+- retourne une zone
 - paramètre : clé primaire
 *********************************************************/
 exports.findAreaZoneById = (req, res) => {
     const id = req.params.id
 
-    AreaZoneModel.findByPk(id)
+    AreaZoneModel
+        .findByPk(id)
         .then((element) => {
-            if(element === null) {
+            if(!element) {
                 const msg = "La zone n'existe pas."
                 return res.status(404).json({ status: "ERR_NOT_FOUND", message: msg })                
             }
             
             const msg = "La zone a bien été retournée."
-            return res.status(200).json({ status: "SUCCESS", message: msg, data: element })
+            res.status(200).json({ status: "SUCCESS", message: msg, data: element })
         })
         .catch((error) => {
-            return res.status(500).json({ status: "ERR_SERVER", message: error.message })
+            res.status(500).json({ status: "ERR_SERVER", message: error.message })
         })  
 }
 
 /*********************************************************
 CREATE
-- crée et retourne un type de loisir
+- crée et retourne une zone
 *********************************************************/
 exports.createAreaZone = (req, res) => {
-    AreaZoneModel.create(req.body)
-    .then((element) => {
-        const  msg = `La zone '${element.name}' a bien été ajoutée.`
-        return res.status(200).json({ status: "SUCCESS", message: msg })
-    })
-    .catch(error => {
-        if(error instanceof UniqueConstraintError || error instanceof ValidationError){
-            return res.status(409).json({ status: "ERR_CONSTRAINT", message: error.message })    
-        }        
-        else {
-            return res.status(500).json({ status: "ERR_SERVER", message: error.message })    
-        }
-    })
+    AreaZoneModel
+        .create(req.body)
+        .then((element) => {
+            const  msg = `La zone '${element.name}' a bien été ajoutée.`
+            res.status(200).json({ status: "SUCCESS", message: msg })
+        })
+        .catch((error) => {
+            if(error instanceof UniqueConstraintError || error instanceof ValidationError){
+                return res.status(409).json({ status: "ERR_CONSTRAINT", message: error.message })    
+            }        
+            res.status(500).json({ status: "ERR_SERVER", message: error.message })    
+        })
 }
 
 /*********************************************************
 UPDATE
-- modifie un type de loisir
+- modifie une zone
 - paramètres : clé primaire et données
 *********************************************************/
 exports.updateAreaZone = (req, res) => {
     const id = req.params.id
 
-    AreaZoneModel.update(req.body,{
-        where: {id: id}
-    })
-    .then((element) => {
-        if(element[0] === 0) { // element[0] indique le nombre d'éléments modifiés
-            const msg = `Modification impossible : aucun élément ne correspond à l'id : ${id}.`
-            return res.status(404).json({ status: "ERR_NOT_FOUND", message: msg })
-        }
+    AreaZoneModel
+        .findByPk(id)
+        .then((element) => {
+            if(!element) {
+                const msg = `Modification impossible : aucun élément ne correspond à l'id : ${id}.`
+                return res.status(404).json({ status: "ERR_NOT_FOUND", message: msg })
+            }
 
-        const msg = `La zone '${req.body.name}' a bien été modifiée.`
-        return res.status(200).json({ status: "SUCCESS", message: msg })
-    })
-    .catch(error => {
-        if(error instanceof UniqueConstraintError || error instanceof ValidationError){
-            return res.status(409).json({ status: "ERR_CONSTRAINT", message: error.message })    
-        }
-
-        return res.status(500).json({ status: "ERR_SERVER", message: error.message })    
-    })
+            AreaZoneModel
+                .update(req.body,{
+                    where: {id: id}
+                })
+                .then(() => {
+                    const msg = `La zone '${req.body.name}' a bien été modifiée.`
+                    res.status(200).json({ status: "SUCCESS", message: msg })
+                })
+                .catch(error => {
+                    if(error instanceof UniqueConstraintError || error instanceof ValidationError){
+                        return res.status(409).json({ status: "ERR_CONSTRAINT", message: error.message })    
+                    }
+                    throw Error(error)   
+                })
+        })
+        .catch((error) => {
+            res.status(500).json({ status: "ERR_SERVER", message: error.message })
+        }) 
 }
 
 /*********************************************************
 DELETE
-- supprime un type de loisir
+- supprime une zone
 - paramètre : clé primaire
 *********************************************************/
 exports.deleteAreaZone = (req, res) => {
@@ -130,21 +139,20 @@ exports.deleteAreaZone = (req, res) => {
     AreaZoneModel.destroy({
         where: {id: id}
     })
-    .then((element) => {
-        if(element === 0) { // element indique le nombre d'éléments supprimés
+    .then((count) => {
+        if(count === 0) { // element indique le nombre d'éléments supprimés
             const msg = `Suppression impossible : aucun élément ne correspond à l'id : ${id}.`
             return res.status(404).json({ status: "ERR_NOT_FOUND", message: msg })
         }
 
         const msg = `La zone a bien été supprimée.`
-        return res.status(200).json({ status: "SUCCESS", message: msg })
+        res.status(200).json({ status: "SUCCESS", message: msg })
     })
     .catch((error) => {
         if(error instanceof ForeignKeyConstraintError){
             const msg = `Suppression impossible : des enregistrements sont liés.`
             return res.status(409).json({ status: "ERR_CONSTRAINT", message: msg })
         }
-
-        return res.status(500).json({ status: "ERR_SERVER", message: error.message })            
+        res.status(500).json({ status: "ERR_SERVER", message: error.message })            
     })
 }

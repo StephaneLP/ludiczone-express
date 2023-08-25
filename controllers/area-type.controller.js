@@ -120,7 +120,7 @@ exports.updateAreaType = (req, res) => {
                     if(error instanceof UniqueConstraintError || error instanceof ValidationError){
                         return res.status(409).json({ status: "ERR_CONSTRAINT", message: error.message })    
                     }
-                    throw Error(error)   
+                    throw Error(error)
                 })
         })
         .catch((error) => {

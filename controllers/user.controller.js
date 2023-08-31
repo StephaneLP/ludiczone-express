@@ -24,7 +24,7 @@ exports.signUp = (req, res) => {
                             { expiresIn: "300000" })
 
                         const url = "http://localhost:3000/inscription-confirm/" + token
-                        sendMailRegistration(element.email, "Inscription site LudicZone", req.body.nick_name, url)
+                        sendMailRegistration(element.email, "Inscription site LudicZone", element.nick_name, url)
                             .then((info) => {
                                 const  msg = `Un mail de validation de la création du compte a été envoyé à l'adresse : '${info.accepted[0]}'.`
                                 res.status(200).json({ status: "SUCCESS", message: msg })
@@ -55,8 +55,21 @@ UPDATE (SIGNUP : confirmation de l'asresse email)
 - met à jour l'utilisateur
 *********************************************************/
 exports.signUpConfirm = (req, res) => {
+    const authorizationHeader = req.headers.authorization
+
+    if(!authorizationHeader) {
+        const msg = "Un token est nécessaire pour confirmer l'adresse email."
+        return res.status(400).json({ status: "ERR_REQUEST", message: msg })
+    }
+
     try {
-        const token = req.params.token
+        const token = authorizationHeader.split(' ')[1]
+
+        if(token === "null") {
+            const msg = "Un token est nécessaire pour confirmer l'adresse email."
+            return res.status(400).json({ status: "ERR_REQUEST", message: msg })
+        }
+
         const payload = jwt.verify(token, privateKey) // Vérification du token
         const id = payload.data // Décryptage de l'id user
 
@@ -97,5 +110,68 @@ exports.signUpConfirm = (req, res) => {
                 msg = "Erreur de vérification  de l'adresse email."
         }
         res.status(401).json({ status: "ERR_AUTHENTICATION", message: msg })
+    }
+}
+
+/*********************************************************
+POST (SEND NEW MAIL : confirmation de l'asresse email)
+- envoi d'un nouveau token par mail pour confirmer l'adresse mail
+*********************************************************/
+exports.sendNewMail = (req, res) => {
+    const authorizationHeader = req.headers.authorization
+
+    if(!authorizationHeader) {
+        const msg = "Un token est nécessaire pour confirmer l'adresse email."
+        return res.status(400).json({ status: "ERR_REQUEST", message: msg })
+    }
+
+    try {
+        const token = authorizationHeader.split(' ')[1]
+
+        if(token === "null") {
+            const msg = "Un token est nécessaire pour confirmer l'adresse email."
+            return res.status(400).json({ status: "ERR_REQUEST", message: msg })
+        }
+
+        const decoded = jwt.decode(token)
+        const id = decoded.data
+
+        UserModel
+            .findByPk(id)
+            .then((element) => {
+                if(!element) {
+                    const msg = `Aucun utilisateur correspondant à l'id : ${id} n'a été trouvé.`
+                    return res.status(404).json({ status: "ERR_NOT_FOUND", message: msg })
+                }
+    
+                try {
+                    const newtoken = jwt.sign(
+                        { data: element.id }, // Génération du token avec encryptage de l'id user
+                        privateKey,
+                        { expiresIn: "300000" })
+
+                    const url = "http://localhost:3000/inscription-confirm/" + newtoken
+                    sendMailRegistration(element.email, "Inscription site LudicZone", element.nick_name, url)
+                        .then((info) => {
+                            const  msg = `Un mail de validation de la création du compte a été envoyé à l'adresse : '${info.accepted[0]}'.`
+                            res.status(200).json({ status: "SUCCESS", message: msg })
+                        })
+                        .catch((error) => {
+                            const msg = "Une erreur est survenue lors de l'envoi d'un nouveau mail de vérification."
+                            res.status(400).json({ status: "ERR_REQUEST", message: `${msg} (${error.message})` })
+                        })
+                }
+                catch(error) {
+                    const msg = "Une erreur est survenue lors de la génération d'un nouveau token."
+                    res.status(400).json({ status: "ERR_REQUEST", message: msg })
+                }
+            })
+            .catch((error) => {
+                res.status(500).json({ status: "ERR_SERVER", message: error.message })
+            }) 
+    }
+    catch(error) {
+        const msg = "Une erreur est survenue lors de la vérification du token."
+        res.status(400).json({ status: "ERR_REQUEST", message: msg })
     }
 }

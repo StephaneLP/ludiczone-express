@@ -8,9 +8,10 @@ Composant Inscription
 router
     .route('/signup')
     .post(UserController.signUp)
+    .put(UserController.signUpConfirm)
 
 router
-    .route('/signup/:token')
-    .put(UserController.signUpConfirm)
+    .route('/sendnewmail')
+    .post(UserController.sendNewMail)
 
 module.exports = router;

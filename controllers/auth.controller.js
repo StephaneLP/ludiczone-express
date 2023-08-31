@@ -33,6 +33,11 @@ exports.login = (req, res) => {
                 return res.status(401).json({ status: "ERR_AUTHENTICATION", message: msg })
             }
 
+            if(!element.verified_email) {
+                const msg = "L'adresse email n'a pas été vérifiée."
+                return res.status(400).json({ status: "ERR_REQUEST", message: msg })
+            }
+
             bcrypt
                 .compare(password,element.password) // Vérification du mot de passe
                 .then(isValid => {
@@ -134,7 +139,8 @@ exports.checkIfUserAdmin = (req, res) => {
             .findByPk(id) // Vérification du role du user
             .then(user => {
                 if(!user) {
-                    return res.status(403).end()
+                    const msg = "Aucun utilisateur n'a été trouvé pour ce jeton."
+                    return res.status(404).json({ status: "ERR_NOT_FOUND", message: msg })
                 }
                 if(user.role !== "admin") {
                     const msg = "Vos droits sont insuffisants."

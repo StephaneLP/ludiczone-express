@@ -35,7 +35,7 @@ exports.login = (req, res) => {
 
             if(!element.verified_email) {
                 const msg = "L'adresse email n'a pas été vérifiée."
-                return res.status(400).json({ status: "ERR_REQUEST", message: msg })
+                return res.status(401).json({ status: "ERR_VERIFIED_EMAIL", message: msg })
             }
 
             bcrypt
@@ -57,7 +57,7 @@ exports.login = (req, res) => {
                     }
                     catch(error){
                         const msg = "Echec! La génération du token a échoué."
-                        res.status(401).json({ status: "ERR_AUTHENTICATION", message: `${msg} (${error.message})` })
+                        res.status(500).json({ status: "ERR_SERVER", message: `${msg} (${error.message})` })
                      }
                 })
                 .catch((error) => {

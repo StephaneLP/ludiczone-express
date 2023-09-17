@@ -1,17 +1,25 @@
 const express = require('express');
 const router = express.Router();
 const UserController = require('../controllers/user.controller')
+const SignUpController = require('../controllers/signup.controller')
 
 /*********************************************************
-Composant Inscription
+Composant Inscription (SignUp)
 *********************************************************/
 router
     .route('/signup')
-    .post(UserController.signUp)
-    .put(UserController.signUpConfirm)
+    .post(SignUpController.signUp)
+    .put(SignUpController.signUpConfirm)
 
 router
-    .route('/sendnewmail')
-    .post(UserController.sendNewMail)
+    .route('/sendmail/confirmemail')
+    .post(SignUpController.confirmEmail)
+
+/*********************************************************
+Composant User
+*********************************************************/
+router
+    .route('/sendmail/forgotpassword')
+    .post(UserController.forgotPassword)
 
 module.exports = router;

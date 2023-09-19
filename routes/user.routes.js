@@ -19,6 +19,10 @@ router
 Composant User
 *********************************************************/
 router
+    .route('/forgotpassword')
+    .put(UserController.changeForgottenPassword)
+
+router
     .route('/sendmail/forgotpassword')
     .post(UserController.forgotPassword)
 

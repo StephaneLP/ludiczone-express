@@ -3,7 +3,7 @@ const { UserModel } = require('../db/sequelize')
 const { UniqueConstraintError, ValidationError } = require("sequelize")
 const { sendMailRegistration } = require("../utils/sendMail")
 const jwt = require("jsonwebtoken")
-const privateKey = require("../setting/privateKey")
+const privateKey = require("../setting/privateKeySignUp")
 
 /*********************************************************
 CREATE (SIGNUP : inscription)
@@ -24,7 +24,7 @@ exports.signUp = (req, res) => {
                             { expiresIn: "300000" })
 
                         const url = "http://localhost:3000/inscription-confirm/" + token
-                        sendMailRegistration(element.email, "Inscription site LudicZone", element.nick_name, url)
+                        sendMailRegistration(element.email, "Inscription site LudicZone", element.nick_name, url, "mailCheckAddress.html")
                             .then((info) => {
                                 const  msg = `Un mail de validation de la création du compte a été envoyé à l'adresse : '${info.accepted[0]}'.`
                                 res.status(200).json({ status: "SUCCESS", message: msg })
@@ -147,7 +147,7 @@ exports.confirmEmail = (req, res) => {
                     { expiresIn: "300000" })
 
                 const url = "http://localhost:3000/inscription-confirm/" + token
-                sendMailRegistration(element.email, "Inscription site LudicZone", element.nick_name, url)
+                sendMailRegistration(element.email, "Inscription site LudicZone", element.nick_name, url, "mailCheckAddress.html")
                     .then((info) => {
                         const  msg = `Un mail de validation de la création du compte a été envoyé à l'adresse : '${info.accepted[0]}'.`
                         res.status(200).json({ status: "SUCCESS", message: msg })

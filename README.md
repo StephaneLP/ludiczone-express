@@ -2,7 +2,7 @@ Après clonage du projet depuis github :
 
 1. Prérequis : existence d'une base de données (mariadb) nommée ludiczone
 1. Installer les modules à l'aide de la commande : npm install
-2. créer le dossier setting dans lequel seront créés les fichiers :
+2. Créer le dossier setting dans lequel seront créés les fichiers :
     - privateKeyLogin.js
         Ce fichier contient la clé privée utilisée pour la création et la vérification des tokens dans les fonctions déstinées à l'authentification.
         -> Ecrire la ligne suivante : module.exports = "*" ( * = chaine de caractères de votre choix)
